@@ -103,8 +103,9 @@ function Landing() {
         <Results />
         <How />
         <Compare />
-        <Pricing />
+        <Experts />
         <Testimonials />
+        <Pricing />
         <Faq />
         <FinalCta />
       </main>
@@ -357,26 +358,35 @@ function Compare() {
             </ul>
           </div>
         </div>
+      </div>
+    </section>
+  );
+}
 
-        <div className="mx-auto mt-24 max-w-2xl text-center">
+function Experts() {
+  const r = useReveal();
+  return (
+    <section className="bg-cream py-24 sm:py-32">
+      <div ref={r.ref} className={`${r.className} mx-auto max-w-6xl px-5 sm:px-8`}>
+        <div className="mx-auto max-w-2xl text-center">
           <p className="text-xs font-medium uppercase tracking-[0.25em] text-brass">
             {EXPERTS.kicker}
           </p>
-          <h2 className="mt-4 font-display text-3xl font-semibold leading-tight text-cream sm:text-5xl">
+          <h2 className="mt-4 font-display text-3xl font-semibold leading-tight text-ink sm:text-5xl">
             {EXPERTS.heading}
           </h2>
-          <p className="mt-4 text-cream/70">{EXPERTS.intro}</p>
+          <p className="mt-4 text-slate-muted">{EXPERTS.intro}</p>
         </div>
-        <div className="mt-12 grid gap-6 sm:grid-cols-2">
+        <div className="mt-14 grid gap-6 sm:grid-cols-2">
           {EXPERTS.points.map((p) => (
             <div
               key={p.title}
-              className="flex items-start gap-4 rounded-2xl border border-white/10 bg-white/[0.03] p-7"
+              className="flex items-start gap-4 rounded-2xl border border-ink/10 bg-white p-7 shadow-sm"
             >
               <ShieldCheck className="mt-0.5 h-6 w-6 shrink-0 text-brass" strokeWidth={1.5} />
               <div>
-                <h3 className="text-base font-semibold text-cream">{p.title}</h3>
-                <p className="mt-1.5 text-sm leading-relaxed text-cream/65">{p.desc}</p>
+                <h3 className="text-base font-semibold text-ink">{p.title}</h3>
+                <p className="mt-1.5 text-sm leading-relaxed text-slate-muted">{p.desc}</p>
               </div>
             </div>
           ))}
@@ -517,24 +527,22 @@ function Testimonials() {
 function Faq() {
   const r = useReveal();
   return (
-    <section id="faq" className="bg-cream py-24 sm:py-32">
+    <section id="faq" className="section-dark grain py-24 sm:py-32">
       <div ref={r.ref} className={`${r.className} mx-auto max-w-3xl px-5 sm:px-8`}>
         <div className="text-center">
           <p className="text-xs font-medium uppercase tracking-[0.25em] text-brass">Questions</p>
-          <h2 className="mt-4 font-display text-3xl font-semibold leading-tight text-ink sm:text-5xl">
+          <h2 className="mt-4 font-display text-3xl font-semibold leading-tight text-cream sm:text-5xl">
             Everything you wanted to ask.
           </h2>
         </div>
 
         <Accordion type="single" collapsible className="mt-12 w-full">
           {FAQ.map((f, i) => (
-            <AccordionItem key={i} value={`item-${i}`} className="border-b border-ink/10">
-              <AccordionTrigger className="py-5 text-left text-base font-medium text-ink hover:text-brass hover:no-underline">
+            <AccordionItem key={i} value={`item-${i}`} className="border-b border-white/10">
+              <AccordionTrigger className="py-5 text-left text-base font-medium text-cream hover:text-brass hover:no-underline">
                 {f.q}
               </AccordionTrigger>
-              <AccordionContent className="text-slate-muted leading-relaxed">
-                {f.a}
-              </AccordionContent>
+              <AccordionContent className="text-cream/70 leading-relaxed">{f.a}</AccordionContent>
             </AccordionItem>
           ))}
         </Accordion>
@@ -546,16 +554,16 @@ function Faq() {
 function FinalCta() {
   const r = useReveal();
   return (
-    <section className="section-dark grain py-24">
+    <section className="bg-cream py-24">
       <div ref={r.ref} className={`${r.className} mx-auto max-w-3xl px-5 text-center sm:px-8`}>
-        <h2 className="font-display text-4xl font-semibold leading-tight text-cream sm:text-5xl">
+        <h2 className="font-display text-4xl font-semibold leading-tight text-ink sm:text-5xl">
           Your hair is one home visit away.
         </h2>
-        <p className="mt-4 text-cream/70">Free consultation · Delhi NCR · Completely private</p>
+        <p className="mt-4 text-slate-muted">Free consultation · Delhi NCR · Completely private</p>
         <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
           <Link
             to="/book"
-            className="inline-flex items-center justify-center gap-2 rounded-full bg-brass px-7 py-3.5 text-sm font-semibold text-ink transition hover:bg-brass-soft"
+            className="inline-flex items-center justify-center gap-2 rounded-full bg-ink px-7 py-3.5 text-sm font-semibold text-cream transition hover:bg-ink-soft"
           >
             Book a Free Home Consultation <ArrowRight className="h-4 w-4" />
           </Link>
@@ -563,7 +571,7 @@ function FinalCta() {
             href={waLink()}
             target="_blank"
             rel="noreferrer"
-            className="inline-flex items-center justify-center gap-2 rounded-full border border-cream/30 px-7 py-3.5 text-sm font-medium text-cream transition hover:border-brass hover:text-brass"
+            className="inline-flex items-center justify-center gap-2 rounded-full border border-ink/30 px-7 py-3.5 text-sm font-medium text-ink transition hover:border-brass hover:text-brass"
           >
             <MessageCircle className="h-4 w-4" /> WhatsApp us
           </a>
