@@ -1,0 +1,208 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-cream: var(--cream);
+  --color-cream-soft: var(--cream-soft);
+  --color-brass: var(--brass);
+  --color-brass-soft: var(--brass-soft);
+  --color-slate-muted: var(--slate-muted);
+
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --font-display: "Fraunces", ui-serif, Georgia, serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+}
+
+:root {
+  --radius: 0.75rem;
+
+  /* Default: Navy Trust + Warm Gold */
+  --ink: oklch(0.22 0.045 250);
+  --ink-soft: oklch(0.30 0.055 250);
+  --cream: oklch(0.97 0.008 90);
+  --cream-soft: oklch(0.93 0.012 90);
+  --brass: oklch(0.76 0.10 75);
+  --brass-soft: oklch(0.85 0.07 80);
+  --slate-muted: oklch(0.55 0.025 250);
+  --dark-glow-a: oklch(0.32 0.07 250);
+  --dark-glow-b: oklch(0.28 0.06 240);
+
+  --background: var(--cream);
+  --foreground: var(--ink);
+  --card: oklch(1 0 0);
+  --card-foreground: var(--ink);
+  --popover: oklch(1 0 0);
+  --popover-foreground: var(--ink);
+  --primary: var(--brass);
+  --primary-foreground: var(--ink);
+  --secondary: var(--cream-soft);
+  --secondary-foreground: var(--ink);
+  --muted: var(--cream-soft);
+  --muted-foreground: var(--slate-muted);
+  --accent: var(--brass);
+  --accent-foreground: var(--ink);
+  --destructive: oklch(0.55 0.22 27);
+  --destructive-foreground: oklch(0.98 0 0);
+  --border: oklch(0.88 0.012 90);
+  --input: oklch(0.90 0.012 90);
+  --ring: var(--brass);
+}
+
+.section-dark {
+  --background: var(--ink);
+  --foreground: var(--cream);
+  --card: var(--ink-soft);
+  --card-foreground: var(--cream);
+  --popover: var(--ink-soft);
+  --popover-foreground: var(--cream);
+  --muted: var(--ink-soft);
+  --muted-foreground: oklch(0.78 0.025 250);
+  --border: oklch(1 0 0 / 12%);
+  --input: oklch(1 0 0 / 14%);
+  --secondary: var(--ink-soft);
+  --secondary-foreground: var(--cream);
+
+  background-color: var(--ink);
+  color: var(--cream);
+  background-image:
+    radial-gradient(ellipse 80% 50% at 50% -10%, var(--dark-glow-a) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 90% 100%, var(--dark-glow-b) 0%, transparent 60%);
+}
+
+/* Light mode — flip "dark" sections to soft ivory surfaces, force dark text */
+:root[data-mode="light"] .section-dark {
+  /* Repoint the cream tokens to dark ink so every text-cream / bg-cream
+     inside a dark section becomes properly dark on light surface. */
+  --cream: var(--ink);
+  --cream-soft: var(--ink-soft);
+
+  --background: oklch(0.94 0.012 90);
+  --foreground: var(--ink);
+  --card: oklch(1 0 0);
+  --card-foreground: var(--ink);
+  --popover: oklch(1 0 0);
+  --popover-foreground: var(--ink);
+  --muted: oklch(0.96 0.012 90);
+  --muted-foreground: var(--slate-muted);
+  --border: oklch(0 0 0 / 10%);
+  --input: oklch(0 0 0 / 12%);
+  --secondary: oklch(0.96 0.012 90);
+  --secondary-foreground: var(--ink);
+
+  background-color: oklch(0.94 0.012 90);
+  color: var(--ink);
+  background-image:
+    radial-gradient(ellipse 80% 50% at 50% -10%, color-mix(in oklab, var(--brass) 22%, transparent) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 90% 100%, color-mix(in oklab, var(--ink) 8%, transparent) 0%, transparent 60%);
+}
+
+/* Drop the grain noise in light mode — it muddies pale surfaces */
+:root[data-mode="light"] .grain::after { display: none; }
+
+/* Light mode: navbar header — flip cream text + ink bg to dark-on-cream */
+:root[data-mode="light"] header [class*="text-cream"] { color: var(--ink); }
+:root[data-mode="light"] header [class*="bg-ink"] {
+  background-color: oklch(0.97 0.008 90 / 0.85) !important;
+  border-color: oklch(0 0 0 / 0.08) !important;
+}
+
+/* Soften pure-white borders/dividers inside flipped dark sections */
+:root[data-mode="light"] .section-dark [class*="border-white"],
+:root[data-mode="light"] .section-dark [class*="bg-white"] {
+  border-color: oklch(0 0 0 / 10%);
+}
+
+
+/* Grain overlay for dark sections */
+.grain {
+  position: relative;
+  isolation: isolate;
+}
+.grain::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.06;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,<svg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.9'/></svg>");
+  z-index: 1;
+}
+.grain > * { position: relative; z-index: 2; }
+
+.brass-rule {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--brass) 30%, var(--brass) 70%, transparent);
+}
+
+/* Reveal animation */
+@keyframes reveal-up {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.reveal {
+  opacity: 0;
+}
+.reveal.in-view {
+  animation: reveal-up 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+.reveal-delay-1 { animation-delay: 0.1s; }
+.reveal-delay-2 { animation-delay: 0.22s; }
+.reveal-delay-3 { animation-delay: 0.34s; }
+.reveal-delay-4 { animation-delay: 0.46s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal, .reveal.in-view { opacity: 1; animation: none; transform: none; }
+  .pulse-ring { animation: none !important; }
+}
+
+@keyframes pulse-ring {
+  0% { transform: scale(1); opacity: 0.5; }
+  100% { transform: scale(1.8); opacity: 0; }
+}
+.pulse-ring {
+  animation: pulse-ring 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@layer base {
+  * { border-color: var(--color-border); }
+  html { scroll-behavior: smooth; }
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, h3, h4 { font-family: var(--font-display); letter-spacing: -0.015em; }
+}
