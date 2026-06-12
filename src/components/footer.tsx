@@ -12,7 +12,9 @@ export function Footer() {
             <span className="text-brass">AtHome</span>
           </div>
           <p className="mt-3 text-sm text-cream/70">
-            Discreet, expert-led at-home hair patch fittings across Delhi NCR.
+            Discreet, expert-led at-home hair patch fittings across Delhi NCR. Non-surgical hair
+            replacement for men — matched, fitted, and styled at your home, from consultation to
+            aftercare.
           </p>
         </div>
 
@@ -85,7 +87,7 @@ export function Footer() {
             <Link to="/terms" className="hover:text-brass">
               Terms
             </Link>
-            <p>100% private &amp; confidential service.</p>
+            <p>Private &amp; confidential, always.</p>
           </div>
         </div>
       </div>

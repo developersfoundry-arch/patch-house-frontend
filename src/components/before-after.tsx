@@ -5,9 +5,17 @@ interface Props {
   before: string;
   after: string;
   caption?: string;
+  altBefore?: string;
+  altAfter?: string;
 }
 
-export function BeforeAfter({ before, after, caption }: Props) {
+export function BeforeAfter({
+  before,
+  after,
+  caption,
+  altBefore = "Before at-home hair patch fitting",
+  altAfter = "After at-home hair patch fitting",
+}: Props) {
   const [pos, setPos] = useState(50);
   const ref = useRef<HTMLDivElement>(null);
   const dragging = useRef(false);
@@ -56,14 +64,14 @@ export function BeforeAfter({ before, after, caption }: Props) {
         {/* After (base, fills container) */}
         <img
           src={after}
-          alt="After at-home hair patch fitting"
+          alt={altAfter}
           className="absolute inset-0 h-full w-full object-cover object-top"
           draggable={false}
         />
         {/* Before (same container, clipped with inset) */}
         <img
           src={before}
-          alt="Before at-home hair patch fitting"
+          alt={altBefore}
           className="absolute inset-0 h-full w-full object-cover object-top"
           style={{ clipPath: `inset(0 ${100 - pos}% 0 0)` }}
           draggable={false}

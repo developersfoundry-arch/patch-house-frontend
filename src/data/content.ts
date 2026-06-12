@@ -12,8 +12,8 @@ export const waLink = (msg = BRAND.whatsappMessage) =>
   `https://wa.me/${BRAND.whatsappNumber}?text=${encodeURIComponent(msg)}`;
 
 export const TRUST = [
-  "Serving Delhi NCR since 2023",
-  "100% private home visits",
+  "Home visits across Delhi NCR",
+  "Completely private",
   "Same-day fitting",
   "ID-verified experts",
 ];

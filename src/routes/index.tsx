@@ -44,13 +44,28 @@ const ICONS = { Camera, FlaskConical, DoorClosed } as const;
 const JSON_LD = JSON.stringify([
   {
     "@context": "https://schema.org",
-    "@type": "LocalBusiness",
+    "@type": "HairSalon",
     name: BRAND.name,
     description:
       "Discreet at-home hair patch fittings across Delhi NCR. A certified hair expert visits you privately and fits your non-surgical hair patch the same day.",
     telephone: `+${BRAND.whatsappNumber}`,
     areaServed: BRAND.cities.map((c) => ({ "@type": "City", name: c })),
     priceRange: "₹₹",
+    knowsAbout: [
+      "Non-surgical hair replacement",
+      "Hair patch fitting for men",
+      "Hair systems and toupees",
+      "At-home hair loss solutions",
+    ],
+    hasOfferCatalog: {
+      "@type": "OfferCatalog",
+      name: "At-home hair patch services",
+      itemListElement: PRICING.map((p) => ({
+        "@type": "Offer",
+        name: p.name,
+        description: p.tagline,
+      })),
+    },
   },
   {
     "@context": "https://schema.org",
@@ -70,7 +85,7 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "A certified hair expert visits your home, finds your perfect non-surgical hair patch, and fits it the same day. 100% private. Delhi NCR.",
+          "Non-surgical hair patch for men, fitted at home in Delhi, Noida, Gurugram & across NCR. A certified expert visits privately and fits it the same day.",
       },
     ],
     scripts: [{ type: "application/ld+json", children: JSON_LD }],
@@ -88,7 +103,6 @@ function Landing() {
         <Results />
         <How />
         <Compare />
-        <Experts />
         <Pricing />
         <Testimonials />
         <Faq />
@@ -168,7 +182,7 @@ function Hero() {
           <div className="relative mx-auto aspect-[3/4] w-full max-w-md overflow-hidden rounded-3xl border border-white/10 shadow-2xl">
             <img
               src={heroImg}
-              alt="Confident man, side profile"
+              alt="Confident man with a natural-looking non-surgical hair patch, side profile"
               className="h-full w-full object-cover"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/20 to-transparent" />
@@ -230,6 +244,8 @@ function Results() {
             before={current.before}
             after={current.after}
             caption={`${current.name} · ${current.city} · ${current.type}`}
+            altBefore={`Hair loss before at-home hair patch fitting — ${current.name}, ${current.city}`}
+            altAfter={`Natural hairline after non-surgical hair patch fitting at home — ${current.name}, ${current.city}`}
           />
         </div>
 
@@ -341,35 +357,26 @@ function Compare() {
             </ul>
           </div>
         </div>
-      </div>
-    </section>
-  );
-}
 
-function Experts() {
-  const r = useReveal();
-  return (
-    <section className="bg-cream-soft py-24 sm:py-32">
-      <div ref={r.ref} className={`${r.className} mx-auto max-w-6xl px-5 sm:px-8`}>
-        <div className="mx-auto max-w-2xl text-center">
+        <div className="mx-auto mt-24 max-w-2xl text-center">
           <p className="text-xs font-medium uppercase tracking-[0.25em] text-brass">
             {EXPERTS.kicker}
           </p>
-          <h2 className="mt-4 font-display text-3xl font-semibold leading-tight text-ink sm:text-5xl">
+          <h2 className="mt-4 font-display text-3xl font-semibold leading-tight text-cream sm:text-5xl">
             {EXPERTS.heading}
           </h2>
-          <p className="mt-4 text-slate-muted">{EXPERTS.intro}</p>
+          <p className="mt-4 text-cream/70">{EXPERTS.intro}</p>
         </div>
-        <div className="mt-14 grid gap-6 sm:grid-cols-2">
+        <div className="mt-12 grid gap-6 sm:grid-cols-2">
           {EXPERTS.points.map((p) => (
             <div
               key={p.title}
-              className="flex items-start gap-4 rounded-2xl border border-ink/10 bg-white p-7"
+              className="flex items-start gap-4 rounded-2xl border border-white/10 bg-white/[0.03] p-7"
             >
               <ShieldCheck className="mt-0.5 h-6 w-6 shrink-0 text-brass" strokeWidth={1.5} />
               <div>
-                <h3 className="text-base font-semibold text-ink">{p.title}</h3>
-                <p className="mt-1.5 text-sm leading-relaxed text-slate-muted">{p.desc}</p>
+                <h3 className="text-base font-semibold text-cream">{p.title}</h3>
+                <p className="mt-1.5 text-sm leading-relaxed text-cream/65">{p.desc}</p>
               </div>
             </div>
           ))}
@@ -544,7 +551,7 @@ function FinalCta() {
         <h2 className="font-display text-4xl font-semibold leading-tight text-cream sm:text-5xl">
           Your hair is one home visit away.
         </h2>
-        <p className="mt-4 text-cream/70">Free consultation · Delhi NCR · 100% private</p>
+        <p className="mt-4 text-cream/70">Free consultation · Delhi NCR · Completely private</p>
         <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
           <Link
             to="/book"

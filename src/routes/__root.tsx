@@ -82,13 +82,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         name: "description",
         content:
-          "Discreet at-home hair patch fittings across Delhi NCR. A certified hair expert visits you privately. Same-day, no clinic, 100% confidential.",
+          "Discreet at-home hair patch fittings across Delhi NCR. A certified hair expert visits you privately. Same-day, no clinic, completely confidential.",
       },
       { property: "og:title", content: "StrandsAtHome — At-Home Hair Patch Service" },
       {
         property: "og:description",
         content:
-          "A certified hair expert visits you privately. Same-day fitting. 100% confidential.",
+          "A certified hair expert visits you privately. Same-day fitting. Completely confidential.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
