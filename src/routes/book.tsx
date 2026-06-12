@@ -10,7 +10,10 @@ export const Route = createFileRoute("/book")({
   head: () => ({
     meta: [
       { title: "Book your free home consultation — StrandsAtHome" },
-      { name: "description", content: "Book a free, private at-home hair patch consultation in Delhi NCR." },
+      {
+        name: "description",
+        content: "Book a free, private at-home hair patch consultation in Delhi NCR.",
+      },
     ],
   }),
   component: BookPage,
@@ -60,12 +63,17 @@ function BookPage() {
   return (
     <div className="section-dark grain min-h-screen px-5 py-14 sm:py-20">
       <div className="mx-auto max-w-xl">
-        <Link to="/" className="mb-8 block text-center font-display text-xl font-semibold text-cream">
+        <Link
+          to="/"
+          className="mb-8 block text-center font-display text-xl font-semibold text-cream"
+        >
           {BRAND.name.replace("AtHome", "")}
           <span className="text-brass">AtHome</span>
         </Link>
 
-        {done ? <Success data={done} /> : (
+        {done ? (
+          <Success data={done} />
+        ) : (
           <>
             <div className="text-center">
               <p className="text-xs font-medium uppercase tracking-[0.25em] text-brass">
@@ -102,8 +110,12 @@ function BookPage() {
 
               <Field label="City" error={errors.city?.message}>
                 <select className={fieldCls} defaultValue="" {...register("city")}>
-                  <option value="" disabled>Select your city</option>
-                  {BRAND.cities.map((c) => <option key={c}>{c}</option>)}
+                  <option value="" disabled>
+                    Select your city
+                  </option>
+                  {BRAND.cities.map((c) => (
+                    <option key={c}>{c}</option>
+                  ))}
                 </select>
               </Field>
 
@@ -122,16 +134,24 @@ function BookPage() {
                 </Field>
                 <Field label="Time slot" error={errors.slot?.message}>
                   <select className={fieldCls} defaultValue="" {...register("slot")}>
-                    <option value="" disabled>Pick a slot</option>
-                    {SLOTS.map((s) => <option key={s}>{s}</option>)}
+                    <option value="" disabled>
+                      Pick a slot
+                    </option>
+                    {SLOTS.map((s) => (
+                      <option key={s}>{s}</option>
+                    ))}
                   </select>
                 </Field>
               </div>
 
               <Field label="Hair concern" error={errors.concern?.message}>
                 <select className={fieldCls} defaultValue="" {...register("concern")}>
-                  <option value="" disabled>What brings you here?</option>
-                  {CONCERNS.map((c) => <option key={c}>{c}</option>)}
+                  <option value="" disabled>
+                    What brings you here?
+                  </option>
+                  {CONCERNS.map((c) => (
+                    <option key={c}>{c}</option>
+                  ))}
                 </select>
               </Field>
 
@@ -202,7 +222,9 @@ function Success({ data }: { data: FormValues }) {
       </dl>
 
       <a
-        href={waLink(`Hi! I just booked a home visit for ${data.date} (${data.slot}) in ${data.city}. Please share confirmation.`)}
+        href={waLink(
+          `Hi! I just booked a home visit for ${data.date} (${data.slot}) in ${data.city}. Please share confirmation.`,
+        )}
         target="_blank"
         rel="noreferrer"
         className="mt-8 inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-semibold text-white transition hover:opacity-90"

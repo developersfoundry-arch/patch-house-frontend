@@ -87,7 +87,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:title", content: "StrandsAtHome — At-Home Hair Patch Service" },
       {
         property: "og:description",
-        content: "A certified hair expert visits you privately. Same-day fitting. 100% confidential.",
+        content:
+          "A certified hair expert visits you privately. Same-day fitting. 100% confidential.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -112,6 +113,12 @@ function RootShell({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
       <head>
+        {/* Apply saved theme before first paint to avoid a dark-mode flash */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `try{if(localStorage.getItem("sah-mode")==="light")document.documentElement.setAttribute("data-mode","light")}catch(e){}`,
+          }}
+        />
         <HeadContent />
       </head>
       <body>

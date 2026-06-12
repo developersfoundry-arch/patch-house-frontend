@@ -98,9 +98,7 @@ export function BeforeAfter({ before, after, caption }: Props) {
           </span>
         </button>
       </div>
-      {caption && (
-        <p className="mt-4 text-center text-sm text-muted-foreground">{caption}</p>
-      )}
+      {caption && <p className="mt-4 text-center text-sm text-muted-foreground">{caption}</p>}
     </div>
   );
 }

@@ -6,22 +6,23 @@ A discreet, at-home hair patch service landing site for Delhi NCR. This document
 
 ## 1. Tech Stack
 
-| Layer            | Choice                                              |
-| ---------------- | --------------------------------------------------- |
-| Framework        | **TanStack Start v1** (React 19, SSR-ready)         |
-| Router           | **TanStack Router** (file-based, type-safe)         |
-| Build tool       | **Vite 8** + `@tailwindcss/vite` (Lightning CSS)    |
-| Styling          | **Tailwind CSS v4** (CSS-first `@theme` tokens)     |
-| UI primitives    | **shadcn/ui** on top of Radix UI                    |
-| Icons            | **lucide-react**                                    |
-| Data fetching    | **@tanstack/react-query** (wired into router ctx)   |
-| Forms            | **react-hook-form** + **zod** + `@hookform/resolvers` |
-| Notifications    | **sonner**                                          |
-| Language         | **TypeScript** (strict mode)                        |
-| Runtime target   | Edge / Cloudflare Workers (via TanStack Start)      |
-| Package manager  | **bun**                                             |
+| Layer           | Choice                                                |
+| --------------- | ----------------------------------------------------- |
+| Framework       | **TanStack Start v1** (React 19, SSR-ready)           |
+| Router          | **TanStack Router** (file-based, type-safe)           |
+| Build tool      | **Vite 8** + `@tailwindcss/vite` (Lightning CSS)      |
+| Styling         | **Tailwind CSS v4** (CSS-first `@theme` tokens)       |
+| UI primitives   | **shadcn/ui** on top of Radix UI                      |
+| Icons           | **lucide-react**                                      |
+| Data fetching   | **@tanstack/react-query** (wired into router ctx)     |
+| Forms           | **react-hook-form** + **zod** + `@hookform/resolvers` |
+| Notifications   | **sonner**                                            |
+| Language        | **TypeScript** (strict mode)                          |
+| Runtime target  | Edge / Cloudflare Workers (via TanStack Start)        |
+| Package manager | **bun**                                               |
 
 ### Notable dev tooling
+
 - `@lovable.dev/vite-tanstack-config` — preset Vite config
 - ESLint 9 (flat config) + Prettier 3
 - TanStack Router Vite plugin (auto-generates `src/routeTree.gen.ts`)
@@ -70,20 +71,22 @@ src/
 
 File-based via `src/routes/`. The TanStack Router Vite plugin regenerates `src/routeTree.gen.ts` automatically — **never hand-edit it**.
 
-| File                  | URL        | Notes                                     |
-| --------------------- | ---------- | ----------------------------------------- |
-| `__root.tsx`          | —          | HTML shell, `<head>`, providers, `<Outlet/>` |
-| `index.tsx`           | `/`        | Long-form landing page (hash anchors)     |
-| `book.tsx`            | `/book`    | Form, validated with zod                  |
-| `login.tsx`           | `/login`   | Mock OTP flow → navigates to `/book`      |
+| File         | URL      | Notes                                        |
+| ------------ | -------- | -------------------------------------------- |
+| `__root.tsx` | —        | HTML shell, `<head>`, providers, `<Outlet/>` |
+| `index.tsx`  | `/`      | Long-form landing page (hash anchors)        |
+| `book.tsx`   | `/book`  | Form, validated with zod                     |
+| `login.tsx`  | `/login` | Mock OTP flow → navigates to `/book`         |
 
 ### Conventions
+
 - Every route exports `Route = createFileRoute("/path")({...})`.
 - Each route defines its own `head()` with route-specific `title` + `description`.
 - Navigation uses `<Link to="/path">` from `@tanstack/react-router` — **never** `<a href>` for internal navigation.
 - Hash anchors (`#how`, `#results`, `#pricing`, `#faq`) are used **only** for in-page scroll within the long landing page. New shareable sections should become their own route file.
 
 ### Router setup (`src/router.tsx`)
+
 ```ts
 const queryClient = new QueryClient();
 createRouter({
@@ -93,6 +96,7 @@ createRouter({
   defaultPreloadStaleTime: 0,
 });
 ```
+
 A fresh `QueryClient` per request keeps SSR safe.
 
 ---
@@ -105,20 +109,21 @@ Tailwind v4 — no `tailwind.config.js`. All design tokens live in `src/styles.c
 
 **Brand palette (Navy Trust + Warm Gold):**
 
-| Token            | Role                              |
-| ---------------- | --------------------------------- |
-| `--ink`          | Deep navy (primary text / dark bg)|
-| `--ink-soft`     | Slightly lifted navy              |
-| `--cream`        | Off-white (light bg / dark-section text) |
-| `--cream-soft`   | Tinted ivory                      |
-| `--brass`        | Warm gold accent                  |
-| `--brass-soft`   | Hover variant                     |
-| `--slate-muted`  | Secondary copy                    |
-| `--dark-glow-a/b`| Radial glow accents in dark sections |
+| Token             | Role                                     |
+| ----------------- | ---------------------------------------- |
+| `--ink`           | Deep navy (primary text / dark bg)       |
+| `--ink-soft`      | Slightly lifted navy                     |
+| `--cream`         | Off-white (light bg / dark-section text) |
+| `--cream-soft`    | Tinted ivory                             |
+| `--brass`         | Warm gold accent                         |
+| `--brass-soft`    | Hover variant                            |
+| `--slate-muted`   | Secondary copy                           |
+| `--dark-glow-a/b` | Radial glow accents in dark sections     |
 
 All shadcn semantic tokens (`--background`, `--foreground`, `--primary`, `--card`, `--border`, `--ring`, …) are mapped to these brand tokens, so shadcn components inherit the theme automatically.
 
 ### 4.2 Fonts
+
 - **Display:** Fraunces (serif, variable) — `font-display`
 - **Body:** Inter — `font-sans`
 
@@ -127,18 +132,24 @@ Loaded via `<link rel="stylesheet">` in `__root.tsx` head (never `@import` a URL
 ### 4.3 Dark sections + light/dark mode
 
 Two visual surfaces are used across the page:
+
 - **Light/cream surface** (default) — `bg-cream`, `text-ink`.
 - **Dark navy surface** — wrap a section in `className="section-dark grain"`.
 
 `.section-dark` flips the local CSS-variable scope so descendants automatically use the dark palette (`--background: var(--ink)`, `--foreground: var(--cream)`, etc.) and paints two radial glows for atmosphere.
 
 **Light-mode override (`data-mode="light"` on `<html>`):**
+
 - `section-dark` blocks invert: `--cream` is re-pointed to `--ink`, surface becomes soft ivory, text becomes navy. Existing `text-cream` / `bg-ink` utility classes Just Work without component rewrites.
 - The `.grain` noise overlay is disabled (it muddies pale surfaces).
 - A scoped rule in `styles.css` re-tints the **navbar** in light mode (since the navbar isn't `.section-dark`):
   ```css
-  :root[data-mode="light"] header [class*="text-cream"] { color: var(--ink); }
-  :root[data-mode="light"] header [class*="bg-ink"] { background-color: oklch(0.97 0.008 90 / .85) !important; }
+  :root[data-mode="light"] header [class*="text-cream"] {
+    color: var(--ink);
+  }
+  :root[data-mode="light"] header [class*="bg-ink"] {
+    background-color: oklch(0.97 0.008 90 / 0.85) !important;
+  }
   ```
 
 ### 4.4 Theme switcher
@@ -157,16 +168,17 @@ useThemeMode()              // initializes mode from localStorage on mount
 
 ### 4.5 Reusable visual utilities
 
-| Class              | Purpose                                                |
-| ------------------ | ------------------------------------------------------ |
-| `.section-dark`    | Flip a section to the dark surface palette             |
-| `.grain`           | Subtle SVG noise overlay (auto-disabled in light mode) |
-| `.brass-rule`      | Gold horizontal accent line                            |
-| `.reveal` / `.in-view` | Scroll-triggered fade-up animation                 |
-| `.reveal-delay-1..4`   | Staggered reveal delays                            |
-| `.pulse-ring`      | Looping pulse aura (used by WhatsApp FAB)              |
+| Class                  | Purpose                                                |
+| ---------------------- | ------------------------------------------------------ |
+| `.section-dark`        | Flip a section to the dark surface palette             |
+| `.grain`               | Subtle SVG noise overlay (auto-disabled in light mode) |
+| `.brass-rule`          | Gold horizontal accent line                            |
+| `.reveal` / `.in-view` | Scroll-triggered fade-up animation                     |
+| `.reveal-delay-1..4`   | Staggered reveal delays                                |
+| `.pulse-ring`          | Looping pulse aura (used by WhatsApp FAB)              |
 
 ### 4.6 Token rules
+
 - **Never** hardcode colors in components (`text-white`, `bg-[#1a1a2e]`, etc.). Always use semantic Tailwind classes that map to tokens (`text-cream`, `bg-ink`, `text-brass`, `text-foreground`, `bg-background`, …).
 - New colors must be added in `styles.css` and mapped under `@theme inline` before they can be used as Tailwind utilities.
 
@@ -175,26 +187,32 @@ useThemeMode()              // initializes mode from localStorage on mount
 ## 5. Components
 
 ### 5.1 `Navbar` (`components/navbar.tsx`)
+
 - Sticky header, transparent at top → adds blurred dark backdrop after 20px scroll.
 - Desktop nav: in-page hash links + Login + "Book Home Visit" CTA + `<ThemeSwitcher />`.
 - Mobile: hamburger drawer, with `<ThemeSwitcher />` next to the menu button.
 
 ### 5.2 `BeforeAfter` (`components/before-after.tsx`)
+
 Custom draggable comparison slider — no external library.
+
 - Two absolutely-positioned `<img>` layers (after as base, before clipped via `clipPath: inset(0 X% 0 0)`).
 - Pointer/touch handlers update a `pos` state (0–100).
 - Keyboard accessible: the handle is a `role="slider"` button with `aria-valuenow`; ←/→ keys nudge by 4%.
 - Both images use `object-cover object-top` so headshots stay framed identically — keep both source images at the same aspect ratio and crop for fair comparison.
 
 ### 5.3 `WhatsAppFab` (`components/whatsapp-fab.tsx`)
+
 - Fixed bottom-right FAB that appears after `scrollY > 600`.
 - Animated `.pulse-ring` aura.
 - Uses `waLink()` from `data/content.ts` so number + message are centralized.
 
 ### 5.4 `Footer` (`components/footer.tsx`)
+
 Dark section (`.section-dark grain`) with brand block, service-area cities, quick links, and contact CTAs.
 
 ### 5.5 `ui/*` (shadcn primitives)
+
 Standard shadcn components (accordion, button, card, dialog, dropdown-menu, form, input, …). Style tokens come from `:root` + `@theme inline` mappings; do not restyle these components with hardcoded colors.
 
 ---
@@ -202,17 +220,24 @@ Standard shadcn components (accordion, button, card, dialog, dropdown-menu, form
 ## 6. Hooks
 
 ### `useReveal<T>()`
+
 IntersectionObserver-based scroll-in animation. Usage:
+
 ```tsx
 const r = useReveal();
-<div ref={r.ref} className={r.className}>…</div>
+<div ref={r.ref} className={r.className}>
+  …
+</div>;
 ```
+
 Returns `className="reveal in-view"` once the element crosses 15% visibility, then disconnects. Pair with `.reveal-delay-{1..4}` for stagger. Respects `prefers-reduced-motion` (animation disabled).
 
 ### `useThemeMode()`
+
 See §4.4. Reads `sah-mode` from localStorage, applies `data-mode` to `<html>`, exposes `{ mode, toggle }`.
 
 ### `useIsMobile()` (`hooks/use-mobile.tsx`)
+
 shadcn helper — viewport breakpoint listener.
 
 ---
@@ -220,6 +245,7 @@ shadcn helper — viewport breakpoint listener.
 ## 7. Content Layer (`src/data/content.ts`)
 
 All editable site copy is centralized here:
+
 - `BRAND` — name, WhatsApp number, default message, service-area cities.
 - `waLink(msg?)` — builds a `https://wa.me/<number>?text=<encoded>` URL.
 - `TRUST`, `PROBLEMS`, `STEPS`, `COMPARISON`, `PRICING`, `TESTIMONIALS`, `FAQ`.
@@ -232,6 +258,7 @@ All editable site copy is centralized here:
 ## 8. Pages
 
 ### 8.1 `/` — Landing (`routes/index.tsx`)
+
 Long-form scroll page composed of in-file section components:
 
 1. **Hero** — `.section-dark`, animated headline, dual CTAs (book + WhatsApp), trust bullets.
@@ -247,11 +274,13 @@ Long-form scroll page composed of in-file section components:
 Each section uses `useReveal()` for fade-in.
 
 ### 8.2 `/book` (`routes/book.tsx`)
+
 - `react-hook-form` + `zod` schema (name, 10-digit phone, city select, address, date ≥ today, slot, concern, optional notes).
 - On submit, currently shows a confirmation panel with a WhatsApp deep-link prefilled with the submitted summary (no backend persistence yet).
 - Field/label styling centralized in `fieldCls` / `labelCls` consts.
 
 ### 8.3 `/login` (`routes/login.tsx`)
+
 - Two-step state machine (`"phone" | "otp"`), no backend — successful OTP just navigates to `/book`.
 - To wire real auth later: replace the `submitPhone`/`submitOtp` handlers with calls into the auth provider; gate `/book` behind a `_authenticated` layout if needed.
 
@@ -260,6 +289,7 @@ Each section uses `useReveal()` for fade-in.
 ## 9. Root Layout (`src/routes/__root.tsx`)
 
 Responsibilities:
+
 - Declares the HTML shell via `shellComponent: RootShell` (`<html><head><HeadContent/></head><body>{children}<Scripts/></body></html>`).
 - Default `<head>` meta (title, description, OG/Twitter), font preconnect, and stylesheet `<link>`s.
 - `notFoundComponent` — branded 404 page.
@@ -315,19 +345,23 @@ Responsibilities:
 ## 14. Adding Things
 
 ### A new marketing section that should be SEO-indexable
+
 1. Create `src/routes/<name>.tsx` with its own `head()`.
 2. Link to it via `<Link to="/<name>">` from the navbar.
 3. Do **not** add it as another hash anchor on `/`.
 
 ### A new color or design token
+
 1. Add `--my-token` to `:root` in `src/styles.css`.
 2. Register it under `@theme inline` so Tailwind generates utilities (e.g. `--color-my-token: var(--my-token)` → `bg-my-token`).
 3. If it needs a light-mode variant, add an override under `:root[data-mode="light"]`.
 
 ### A new dark section
+
 Wrap with `className="section-dark grain"` — token flipping is automatic.
 
 ### A backend
+
 Enable Lovable Cloud first, then add server functions under `src/lib/api/*.functions.ts` and call them from components via `useServerFn` + TanStack Query.
 
 ---

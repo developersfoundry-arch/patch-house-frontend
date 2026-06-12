@@ -24,9 +24,7 @@ export function Navbar() {
   return (
     <header
       className={`fixed inset-x-0 top-0 z-40 transition-all duration-300 ${
-        scrolled
-          ? "border-b border-white/10 bg-ink/85 backdrop-blur-md"
-          : "bg-transparent"
+        scrolled ? "border-b border-white/10 bg-ink/85 backdrop-blur-md" : "bg-transparent"
       }`}
     >
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-5 sm:px-8">
@@ -67,11 +65,7 @@ export function Navbar() {
 
         <div className="flex items-center gap-2 md:hidden">
           <ThemeSwitcher />
-          <button
-            aria-label="Open menu"
-            className="text-cream"
-            onClick={() => setOpen((o) => !o)}
-          >
+          <button aria-label="Open menu" className="text-cream" onClick={() => setOpen((o) => !o)}>
             {open ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
           </button>
         </div>

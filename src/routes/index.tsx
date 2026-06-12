@@ -77,21 +77,37 @@ function Hero() {
     <section className="section-dark grain relative min-h-screen overflow-hidden">
       <div className="mx-auto grid min-h-screen max-w-7xl items-center gap-10 px-5 pt-28 pb-16 sm:px-8 md:grid-cols-2 md:pt-32">
         <div>
-          <p className="text-xs font-medium uppercase tracking-[0.25em] text-brass animate-[reveal-up_0.7s_ease-out_forwards] opacity-0" style={{ animationDelay: "0.05s" }}>
+          <p
+            className="text-xs font-medium uppercase tracking-[0.25em] text-brass animate-[reveal-up_0.7s_ease-out_forwards] opacity-0"
+            style={{ animationDelay: "0.05s" }}
+          >
             At-Home Hair Patch Service · Delhi NCR
           </p>
           <h1 className="mt-6 font-display text-5xl font-semibold leading-[1.02] tracking-tight text-cream sm:text-6xl md:text-7xl">
-            <span className="block animate-[reveal-up_0.8s_ease-out_forwards] opacity-0" style={{ animationDelay: "0.2s" }}>
+            <span
+              className="block animate-[reveal-up_0.8s_ease-out_forwards] opacity-0"
+              style={{ animationDelay: "0.2s" }}
+            >
               Get your hair back.
             </span>
-            <span className="block text-brass animate-[reveal-up_0.8s_ease-out_forwards] opacity-0" style={{ animationDelay: "0.45s" }}>
+            <span
+              className="block text-brass animate-[reveal-up_0.8s_ease-out_forwards] opacity-0"
+              style={{ animationDelay: "0.45s" }}
+            >
               Without ever leaving home.
             </span>
           </h1>
-          <p className="mt-7 max-w-xl text-base leading-relaxed text-cream/75 sm:text-lg animate-[reveal-up_0.8s_ease-out_forwards] opacity-0" style={{ animationDelay: "0.7s" }}>
-            A certified hair expert visits you privately, finds your perfect non-surgical hair patch, and fits it the same day — at your home, on your schedule.
+          <p
+            className="mt-7 max-w-xl text-base leading-relaxed text-cream/75 sm:text-lg animate-[reveal-up_0.8s_ease-out_forwards] opacity-0"
+            style={{ animationDelay: "0.7s" }}
+          >
+            A certified hair expert visits you privately, finds your perfect non-surgical hair
+            patch, and fits it the same day — at your home, on your schedule.
           </p>
-          <div className="mt-9 flex flex-col gap-3 sm:flex-row animate-[reveal-up_0.8s_ease-out_forwards] opacity-0" style={{ animationDelay: "0.9s" }}>
+          <div
+            className="mt-9 flex flex-col gap-3 sm:flex-row animate-[reveal-up_0.8s_ease-out_forwards] opacity-0"
+            style={{ animationDelay: "0.9s" }}
+          >
             <Link
               to="/book"
               className="inline-flex items-center justify-center gap-2 rounded-full bg-brass px-7 py-3.5 text-sm font-semibold text-ink transition hover:bg-brass-soft"
@@ -107,7 +123,10 @@ function Hero() {
               <MessageCircle className="h-4 w-4" /> Chat on WhatsApp
             </a>
           </div>
-          <div className="mt-10 flex flex-wrap gap-x-6 gap-y-2 text-xs text-cream/55 animate-[reveal-up_0.8s_ease-out_forwards] opacity-0" style={{ animationDelay: "1.1s" }}>
+          <div
+            className="mt-10 flex flex-wrap gap-x-6 gap-y-2 text-xs text-cream/55 animate-[reveal-up_0.8s_ease-out_forwards] opacity-0"
+            style={{ animationDelay: "1.1s" }}
+          >
             {TRUST.map((t, i) => (
               <span key={t} className="flex items-center gap-2">
                 {i > 0 && <span className="h-1 w-1 rounded-full bg-brass" />}
@@ -139,7 +158,8 @@ function Problem() {
     <section className="bg-cream py-24 sm:py-32">
       <div ref={r.ref} className={`${r.className} mx-auto max-w-5xl px-5 sm:px-8`}>
         <h2 className="mx-auto max-w-3xl text-center font-display text-3xl font-semibold leading-tight text-ink sm:text-5xl">
-          Hair loss doesn't just change your hairline. It changes your evenings, your photos, your confidence.
+          Hair loss doesn't just change your hairline. It changes your evenings, your photos, your
+          confidence.
         </h2>
         <div className="mt-14 grid gap-5 sm:grid-cols-3">
           {PROBLEMS.map((p) => {
@@ -168,15 +188,11 @@ function Results() {
     <section id="results" className="section-dark grain py-24 sm:py-32">
       <div ref={r.ref} className={`${r.className} mx-auto max-w-6xl px-5 sm:px-8`}>
         <div className="mx-auto max-w-3xl text-center">
-          <p className="text-xs font-medium uppercase tracking-[0.25em] text-brass">
-            The Results
-          </p>
+          <p className="text-xs font-medium uppercase tracking-[0.25em] text-brass">The Results</p>
           <h2 className="mt-4 font-display text-3xl font-semibold leading-tight text-cream sm:text-5xl">
             Drag. See the difference.
           </h2>
-          <p className="mt-4 text-cream/70">
-            Real results from home fittings across Delhi NCR.
-          </p>
+          <p className="mt-4 text-cream/70">Real results from home fittings across Delhi NCR.</p>
           <div className="brass-rule mx-auto mt-8 w-24" />
         </div>
 
@@ -214,35 +230,36 @@ function Results() {
   );
 }
 
+function StepCard({ step, index }: { step: (typeof STEPS)[number]; index: number }) {
+  const sr = useReveal<HTMLLIElement>();
+  return (
+    <li
+      ref={sr.ref}
+      className={`${sr.className} reveal-delay-${index + 1} rounded-2xl border border-ink/10 bg-white p-7`}
+    >
+      <div className="font-display text-4xl font-semibold text-brass">{step.n}</div>
+      <h3 className="mt-4 text-lg font-semibold text-ink">{step.title}</h3>
+      <p className="mt-2 text-sm leading-relaxed text-slate-muted">{step.desc}</p>
+    </li>
+  );
+}
+
 function How() {
   const r = useReveal();
   return (
     <section id="how" className="bg-cream py-24 sm:py-32">
       <div ref={r.ref} className={`${r.className} mx-auto max-w-6xl px-5 sm:px-8`}>
         <div className="mx-auto max-w-2xl text-center">
-          <p className="text-xs font-medium uppercase tracking-[0.25em] text-brass">
-            How it works
-          </p>
+          <p className="text-xs font-medium uppercase tracking-[0.25em] text-brass">How it works</p>
           <h2 className="mt-4 font-display text-3xl font-semibold leading-tight text-ink sm:text-5xl">
             Four calm steps. One visit.
           </h2>
         </div>
 
         <ol className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {STEPS.map((s, i) => {
-            const sr = useReveal<HTMLLIElement>();
-            return (
-              <li
-                key={s.n}
-                ref={sr.ref}
-                className={`${sr.className} reveal-delay-${i + 1} rounded-2xl border border-ink/10 bg-white p-7`}
-              >
-                <div className="font-display text-4xl font-semibold text-brass">{s.n}</div>
-                <h3 className="mt-4 text-lg font-semibold text-ink">{s.title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-slate-muted">{s.desc}</p>
-              </li>
-            );
-          })}
+          {STEPS.map((s, i) => (
+            <StepCard key={s.n} step={s} index={i} />
+          ))}
         </ol>
 
         <div className="mt-12 text-center">
@@ -330,16 +347,22 @@ function Pricing() {
                   Most chosen
                 </span>
               )}
-              <h3 className={`font-display text-2xl font-semibold ${p.featured ? "text-cream" : "text-ink"}`}>
+              <h3
+                className={`font-display text-2xl font-semibold ${p.featured ? "text-cream" : "text-ink"}`}
+              >
                 {p.name}
               </h3>
               <p className={`mt-1 text-sm ${p.featured ? "text-cream/60" : "text-slate-muted"}`}>
                 {p.tagline}
               </p>
-              <div className={`mt-5 font-display text-3xl font-semibold ${p.featured ? "text-brass" : "text-ink"}`}>
+              <div
+                className={`mt-5 font-display text-3xl font-semibold ${p.featured ? "text-brass" : "text-ink"}`}
+              >
                 {p.price}
               </div>
-              <ul className={`mt-6 flex-1 space-y-3 text-sm ${p.featured ? "text-cream/80" : "text-ink/80"}`}>
+              <ul
+                className={`mt-6 flex-1 space-y-3 text-sm ${p.featured ? "text-cream/80" : "text-ink/80"}`}
+              >
                 {p.features.map((f) => (
                   <li key={f} className="flex items-start gap-2">
                     <Check className="mt-0.5 h-4 w-4 shrink-0 text-brass" />
@@ -422,9 +445,7 @@ function Faq() {
     <section id="faq" className="bg-cream py-24 sm:py-32">
       <div ref={r.ref} className={`${r.className} mx-auto max-w-3xl px-5 sm:px-8`}>
         <div className="text-center">
-          <p className="text-xs font-medium uppercase tracking-[0.25em] text-brass">
-            Questions
-          </p>
+          <p className="text-xs font-medium uppercase tracking-[0.25em] text-brass">Questions</p>
           <h2 className="mt-4 font-display text-3xl font-semibold leading-tight text-ink sm:text-5xl">
             Everything you wanted to ask.
           </h2>
@@ -455,9 +476,7 @@ function FinalCta() {
         <h2 className="font-display text-4xl font-semibold leading-tight text-cream sm:text-5xl">
           Your hair is one home visit away.
         </h2>
-        <p className="mt-4 text-cream/70">
-          Free consultation · Delhi NCR · 100% private
-        </p>
+        <p className="mt-4 text-cream/70">Free consultation · Delhi NCR · 100% private</p>
         <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
           <Link
             to="/book"

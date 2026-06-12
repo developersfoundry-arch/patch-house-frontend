@@ -60,8 +60,16 @@ export const BEFORE_AFTER = [
 export const STEPS = [
   { n: "01", title: "Book online or on WhatsApp", desc: "Share your details in 2 minutes." },
   { n: "02", title: "Expert visits your home", desc: "Private hair & scalp analysis." },
-  { n: "03", title: "Choose your patch", desc: "See options, textures & match your natural hair live." },
-  { n: "04", title: "Same-day fitting & styling", desc: "Walk into your next event with confidence." },
+  {
+    n: "03",
+    title: "Choose your patch",
+    desc: "See options, textures & match your natural hair live.",
+  },
+  {
+    n: "04",
+    title: "Same-day fitting & styling",
+    desc: "Walk into your next event with confidence.",
+  },
 ];
 
 export const COMPARISON = {

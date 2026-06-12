@@ -27,26 +27,46 @@ export function Footer() {
         </div>
 
         <div>
-          <h4 className="text-xs font-medium uppercase tracking-widest text-brass">
-            Quick Links
-          </h4>
+          <h4 className="text-xs font-medium uppercase tracking-widest text-brass">Quick Links</h4>
           <ul className="mt-4 space-y-2 text-sm text-cream/80">
-            <li><a href="/#how" className="hover:text-brass">How it works</a></li>
-            <li><a href="/#results" className="hover:text-brass">Results</a></li>
-            <li><a href="/#pricing" className="hover:text-brass">Pricing</a></li>
-            <li><a href="/#faq" className="hover:text-brass">FAQ</a></li>
+            <li>
+              <a href="/#how" className="hover:text-brass">
+                How it works
+              </a>
+            </li>
+            <li>
+              <a href="/#results" className="hover:text-brass">
+                Results
+              </a>
+            </li>
+            <li>
+              <a href="/#pricing" className="hover:text-brass">
+                Pricing
+              </a>
+            </li>
+            <li>
+              <a href="/#faq" className="hover:text-brass">
+                FAQ
+              </a>
+            </li>
           </ul>
         </div>
 
         <div>
-          <h4 className="text-xs font-medium uppercase tracking-widest text-brass">
-            Talk to us
-          </h4>
+          <h4 className="text-xs font-medium uppercase tracking-widest text-brass">Talk to us</h4>
           <div className="mt-4 space-y-3 text-sm text-cream/80">
-            <a href={`tel:+${BRAND.whatsappNumber}`} className="flex items-center gap-2 hover:text-brass">
+            <a
+              href={`tel:+${BRAND.whatsappNumber}`}
+              className="flex items-center gap-2 hover:text-brass"
+            >
               <Phone className="h-4 w-4" /> +91 99999 99999
             </a>
-            <a href={waLink()} target="_blank" rel="noreferrer" className="flex items-center gap-2 hover:text-brass">
+            <a
+              href={waLink()}
+              target="_blank"
+              rel="noreferrer"
+              className="flex items-center gap-2 hover:text-brass"
+            >
               <MessageCircle className="h-4 w-4" /> WhatsApp us
             </a>
           </div>
@@ -54,7 +74,9 @@ export function Footer() {
       </div>
       <div className="border-t border-white/10">
         <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-2 px-5 py-6 text-xs text-cream/50 sm:flex-row sm:px-8">
-          <p>© {new Date().getFullYear()} {BRAND.name}. All rights reserved.</p>
+          <p>
+            © {new Date().getFullYear()} {BRAND.name}. All rights reserved.
+          </p>
           <p>100% private &amp; confidential service.</p>
         </div>
       </div>

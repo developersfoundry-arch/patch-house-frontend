@@ -13,7 +13,7 @@ export function useReveal<T extends HTMLElement = HTMLDivElement>() {
           obs.disconnect();
         }
       },
-      { threshold: 0.15 }
+      { threshold: 0.15 },
     );
     obs.observe(el);
     return () => obs.disconnect();
