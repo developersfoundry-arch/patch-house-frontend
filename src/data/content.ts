@@ -12,10 +12,10 @@ export const waLink = (msg = BRAND.whatsappMessage) =>
   `https://wa.me/${BRAND.whatsappNumber}?text=${encodeURIComponent(msg)}`;
 
 export const TRUST = [
-  "500+ home fittings",
-  "100% private",
-  "Same-day service",
-  "Trained & verified experts",
+  "Serving Delhi NCR since 2023",
+  "100% private home visits",
+  "Same-day fitting",
+  "ID-verified experts",
 ];
 
 export const PROBLEMS = [
@@ -131,12 +131,38 @@ export const PRICING = [
   },
 ];
 
+export const EXPERTS = {
+  kicker: "Who visits you",
+  heading: "Who walks through your door.",
+  intro:
+    "A small, handpicked team — not gig workers. Every StrandsAtHome expert is someone we would send to our own family.",
+  points: [
+    {
+      title: "ID-verified, every visit",
+      desc: "You get your expert's name and photo on WhatsApp before they arrive. No strangers at your door.",
+    },
+    {
+      title: "Years of fitting experience",
+      desc: "Each expert fitted patches professionally in salons and studios before joining us. This is their craft, not a side job.",
+    },
+    {
+      title: "Discreet by default",
+      desc: "Plain clothes, an unmarked kit, no branding anywhere. To your neighbours, it's just a regular guest.",
+    },
+    {
+      title: "Skin-safe practice",
+      desc: "Trained on dermatologically tested adhesives, with hygienic single-use applicators on every visit.",
+    },
+  ],
+};
+
 export const TESTIMONIALS = [
   {
     initials: "RK",
     name: "Raj K.",
     age: 36,
     city: "Gurugram",
+    rating: 5,
     quote:
       "No one in my building ever knew. I just looked better at my brother's wedding. The expert was completely professional.",
   },
@@ -145,14 +171,16 @@ export const TESTIMONIALS = [
     name: "Arvind S.",
     age: 42,
     city: "Noida",
+    rating: 4,
     quote:
-      "I had been hiding under caps for three years. They came home on a Sunday morning and I had my hairline back by lunch.",
+      "Had been hiding under caps for three years. They came on a Sunday morning and I had my hairline back by lunch. Took me a few days to get used to the adhesive, but now I don't even think about it.",
   },
   {
     initials: "MJ",
     name: "Manish J.",
     age: 31,
     city: "Delhi",
+    rating: 5,
     quote:
       "What I valued most was the privacy. No clinic, no receptionist, no awkward stares. Just one calm conversation at home.",
   },
@@ -161,8 +189,9 @@ export const TESTIMONIALS = [
     name: "Deepak P.",
     age: 47,
     city: "Faridabad",
+    rating: 4,
     quote:
-      "I almost cancelled twice out of nerves. So glad I didn't. My wife actually noticed I was smiling in photos again.",
+      "I almost cancelled twice out of nerves. So glad I didn't. The first colour match wasn't quite right, but they redid it on the spot. My wife noticed I was smiling in photos again.",
   },
 ];
 
@@ -174,6 +203,18 @@ export const FAQ = [
   {
     q: "How long does a patch last?",
     a: "Our classic patches last 4–6 months with daily wear, and premium human-hair patches last 8–12 months. Care and adhesive choice both extend lifespan.",
+  },
+  {
+    q: "What does maintenance actually cost per month?",
+    a: "Plan for roughly ₹600–₹900 a month on adhesive and care products with daily wear. At-home re-taping visits are ₹799, and most clients book one every 3–4 weeks. We walk you through the full cost of ownership at the consultation — before you spend a rupee.",
+  },
+  {
+    q: "How long does the home visit take?",
+    a: "The analysis takes about 15 minutes. If you decide to go ahead, fitting, cutting, and styling take another 60–90 minutes — most visits are finished within two hours.",
+  },
+  {
+    q: "What if I change my mind during the visit?",
+    a: "Then you pay nothing. The consultation and patch demo are free, and no fitting fee is due unless you approve the final look in the mirror before our expert leaves.",
   },
   {
     q: "Does it damage existing hair?",

@@ -1,3 +1,4 @@
+import { Link } from "@tanstack/react-router";
 import { BRAND, waLink } from "@/data/content";
 import { Phone, MessageCircle } from "lucide-react";
 
@@ -75,9 +76,17 @@ export function Footer() {
       <div className="border-t border-white/10">
         <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-2 px-5 py-6 text-xs text-cream/50 sm:flex-row sm:px-8">
           <p>
-            © {new Date().getFullYear()} {BRAND.name}. All rights reserved.
+            © {new Date().getFullYear()} {BRAND.name}, New Delhi. All rights reserved.
           </p>
-          <p>100% private &amp; confidential service.</p>
+          <div className="flex items-center gap-5">
+            <Link to="/privacy" className="hover:text-brass">
+              Privacy
+            </Link>
+            <Link to="/terms" className="hover:text-brass">
+              Terms
+            </Link>
+            <p>100% private &amp; confidential service.</p>
+          </div>
         </div>
       </div>
     </footer>

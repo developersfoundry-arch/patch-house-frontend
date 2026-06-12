@@ -8,7 +8,9 @@ import { BeforeAfter } from "@/components/before-after";
 import { useReveal } from "@/hooks/use-reveal";
 import {
   BEFORE_AFTER,
+  BRAND,
   COMPARISON,
+  EXPERTS,
   FAQ,
   PRICING,
   PROBLEMS,
@@ -32,10 +34,34 @@ import {
   X,
   MessageCircle,
   ArrowRight,
+  ShieldCheck,
   Star,
 } from "lucide-react";
 
 const ICONS = { Camera, FlaskConical, DoorClosed } as const;
+
+// LocalBusiness + FAQPage structured data for Google rich results
+const JSON_LD = JSON.stringify([
+  {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    name: BRAND.name,
+    description:
+      "Discreet at-home hair patch fittings across Delhi NCR. A certified hair expert visits you privately and fits your non-surgical hair patch the same day.",
+    telephone: `+${BRAND.whatsappNumber}`,
+    areaServed: BRAND.cities.map((c) => ({ "@type": "City", name: c })),
+    priceRange: "₹₹",
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: FAQ.map((f) => ({
+      "@type": "Question",
+      name: f.q,
+      acceptedAnswer: { "@type": "Answer", text: f.a },
+    })),
+  },
+]);
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -47,6 +73,7 @@ export const Route = createFileRoute("/")({
           "A certified hair expert visits your home, finds your perfect non-surgical hair patch, and fits it the same day. 100% private. Delhi NCR.",
       },
     ],
+    scripts: [{ type: "application/ld+json", children: JSON_LD }],
   }),
   component: Landing,
 });
@@ -61,6 +88,7 @@ function Landing() {
         <Results />
         <How />
         <Compare />
+        <Experts />
         <Pricing />
         <Testimonials />
         <Faq />
@@ -318,6 +346,39 @@ function Compare() {
   );
 }
 
+function Experts() {
+  const r = useReveal();
+  return (
+    <section className="bg-cream-soft py-24 sm:py-32">
+      <div ref={r.ref} className={`${r.className} mx-auto max-w-6xl px-5 sm:px-8`}>
+        <div className="mx-auto max-w-2xl text-center">
+          <p className="text-xs font-medium uppercase tracking-[0.25em] text-brass">
+            {EXPERTS.kicker}
+          </p>
+          <h2 className="mt-4 font-display text-3xl font-semibold leading-tight text-ink sm:text-5xl">
+            {EXPERTS.heading}
+          </h2>
+          <p className="mt-4 text-slate-muted">{EXPERTS.intro}</p>
+        </div>
+        <div className="mt-14 grid gap-6 sm:grid-cols-2">
+          {EXPERTS.points.map((p) => (
+            <div
+              key={p.title}
+              className="flex items-start gap-4 rounded-2xl border border-ink/10 bg-white p-7"
+            >
+              <ShieldCheck className="mt-0.5 h-6 w-6 shrink-0 text-brass" strokeWidth={1.5} />
+              <div>
+                <h3 className="text-base font-semibold text-ink">{p.title}</h3>
+                <p className="mt-1.5 text-sm leading-relaxed text-slate-muted">{p.desc}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function Pricing() {
   const r = useReveal();
   return (
@@ -384,9 +445,13 @@ function Pricing() {
           ))}
         </div>
 
-        <p className="mt-8 text-center text-sm text-slate-muted">
-          Final pricing confirmed at home after analysis. No hidden charges.
-        </p>
+        <div className="mx-auto mt-10 max-w-2xl rounded-2xl border border-brass/40 bg-white p-6 text-center">
+          <p className="font-display text-lg font-semibold text-ink">The mirror-check promise</p>
+          <p className="mt-2 text-sm leading-relaxed text-slate-muted">
+            No fitting fee is due unless you approve the final look in the mirror. Pay after your
+            fitting — UPI, card, or cash. Final pricing confirmed at home after analysis.
+          </p>
+        </div>
       </div>
     </section>
   );
@@ -414,7 +479,10 @@ function Testimonials() {
             >
               <div className="flex gap-1 text-brass">
                 {Array.from({ length: 5 }).map((_, i) => (
-                  <Star key={i} className="h-4 w-4 fill-brass" />
+                  <Star
+                    key={i}
+                    className={`h-4 w-4 ${i < t.rating ? "fill-brass" : "fill-cream/10 text-cream/25"}`}
+                  />
                 ))}
               </div>
               <blockquote className="mt-5 flex-1 text-cream/85 leading-relaxed">
