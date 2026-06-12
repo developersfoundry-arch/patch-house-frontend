@@ -153,7 +153,7 @@ function Hero() {
           >
             <Link
               to="/book"
-              className="inline-flex items-center justify-center gap-2 rounded-full bg-brass px-7 py-3.5 text-sm font-semibold text-ink transition hover:bg-brass-soft"
+              className="btn-lift inline-flex items-center justify-center gap-2 rounded-full bg-brass px-7 py-3.5 text-sm font-semibold text-ink hover:bg-brass-soft"
             >
               Book a Free Home Consultation <ArrowRight className="h-4 w-4" />
             </Link>
@@ -161,7 +161,7 @@ function Hero() {
               href={waLink()}
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center justify-center gap-2 rounded-full border border-cream/30 px-7 py-3.5 text-sm font-medium text-cream transition hover:border-brass hover:text-brass"
+              className="btn-lift inline-flex items-center justify-center gap-2 rounded-full border border-cream/30 px-7 py-3.5 text-sm font-medium text-cream hover:border-brass hover:text-brass"
             >
               <MessageCircle className="h-4 w-4" /> Chat on WhatsApp
             </a>
@@ -200,17 +200,24 @@ function Problem() {
   return (
     <section className="bg-cream py-24 sm:py-32">
       <div ref={r.ref} className={`${r.className} mx-auto max-w-5xl px-5 sm:px-8`}>
-        <h2 className="mx-auto max-w-3xl text-center font-display text-3xl font-semibold leading-tight text-ink sm:text-5xl">
-          Hair loss doesn't just change your hairline. It changes your evenings, your photos, your
-          confidence.
-        </h2>
+        <div className="mx-auto max-w-3xl text-center">
+          <p className="text-xs font-medium uppercase tracking-[0.25em] text-brass">
+            Sound familiar?
+          </p>
+          <h2 className="mt-4 font-display text-3xl font-semibold leading-tight text-ink sm:text-5xl">
+            Hair loss changes more than your hairline.
+          </h2>
+          <p className="mt-4 text-base text-slate-muted sm:text-lg">
+            Your evenings. Your photos. Your confidence.
+          </p>
+        </div>
         <div className="mt-14 grid gap-5 sm:grid-cols-3">
           {PROBLEMS.map((p) => {
             const Icon = ICONS[p.icon as keyof typeof ICONS];
             return (
               <div
                 key={p.line}
-                className="rounded-2xl border border-ink/10 bg-white p-7 shadow-sm transition hover:-translate-y-1 hover:shadow-md"
+                className="lift rounded-2xl border border-ink/10 bg-white p-7 shadow-sm"
               >
                 <Icon className="h-7 w-7 text-brass" strokeWidth={1.5} />
                 <p className="mt-5 text-base font-medium text-ink">{p.line}</p>
@@ -255,7 +262,7 @@ function Results() {
             <button
               key={b.name}
               onClick={() => setActive(i)}
-              className={`group flex shrink-0 flex-col items-start gap-2 rounded-xl border p-2 text-left transition ${
+              className={`lift group flex shrink-0 flex-col items-start gap-2 rounded-xl border p-2 text-left ${
                 i === active ? "border-brass" : "border-white/10 hover:border-white/30"
               }`}
             >
@@ -280,7 +287,7 @@ function StepCard({ step, index }: { step: (typeof STEPS)[number]; index: number
   return (
     <li
       ref={sr.ref}
-      className={`${sr.className} reveal-delay-${index + 1} rounded-2xl border border-ink/10 bg-white p-7`}
+      className={`${sr.className} reveal-delay-${index + 1} lift rounded-2xl border border-ink/10 bg-white p-7 shadow-sm`}
     >
       <div className="font-display text-4xl font-semibold text-brass">{step.n}</div>
       <h3 className="mt-4 text-lg font-semibold text-ink">{step.title}</h3>
@@ -310,7 +317,7 @@ function How() {
         <div className="mt-12 text-center">
           <Link
             to="/book"
-            className="inline-flex items-center gap-2 rounded-full bg-ink px-7 py-3.5 text-sm font-semibold text-cream transition hover:bg-ink-soft"
+            className="btn-lift inline-flex items-center gap-2 rounded-full bg-ink px-7 py-3.5 text-sm font-semibold text-cream hover:bg-ink-soft"
           >
             Start with a free home visit <ArrowRight className="h-4 w-4" />
           </Link>
@@ -331,7 +338,7 @@ function Compare() {
           </h2>
         </div>
         <div className="mt-14 grid gap-6 md:grid-cols-2">
-          <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-8">
+          <div className="card-glass lift rounded-2xl border border-white/10 p-8 hover:border-white/25">
             <h3 className="text-sm font-medium uppercase tracking-widest text-cream/50">
               Typical clinic visit
             </h3>
@@ -344,7 +351,7 @@ function Compare() {
               ))}
             </ul>
           </div>
-          <div className="rounded-2xl border border-brass/40 bg-brass/[0.06] p-8">
+          <div className="card-glass-brass lift rounded-2xl border border-brass/40 p-8 hover:border-brass">
             <h3 className="text-sm font-medium uppercase tracking-widest text-brass">
               StrandsAtHome
             </h3>
@@ -381,7 +388,7 @@ function Experts() {
           {EXPERTS.points.map((p) => (
             <div
               key={p.title}
-              className="flex items-start gap-4 rounded-2xl border border-ink/10 bg-white p-7 shadow-sm"
+              className="lift flex items-start gap-4 rounded-2xl border border-ink/10 bg-white p-7 shadow-sm"
             >
               <ShieldCheck className="mt-0.5 h-6 w-6 shrink-0 text-brass" strokeWidth={1.5} />
               <div>
@@ -414,10 +421,10 @@ function Pricing() {
           {PRICING.map((p) => (
             <div
               key={p.name}
-              className={`relative flex flex-col rounded-2xl border p-8 transition ${
+              className={`lift relative flex flex-col rounded-2xl border p-8 ${
                 p.featured
                   ? "scale-[1.02] border-brass bg-ink text-cream shadow-xl"
-                  : "border-ink/10 bg-white"
+                  : "border-ink/10 bg-white shadow-sm"
               }`}
             >
               {p.featured && (
@@ -450,7 +457,7 @@ function Pricing() {
               </ul>
               <Link
                 to="/book"
-                className={`mt-8 inline-flex items-center justify-center rounded-full px-5 py-3 text-sm font-semibold transition ${
+                className={`btn-lift mt-8 inline-flex items-center justify-center rounded-full px-5 py-3 text-sm font-semibold ${
                   p.featured
                     ? "bg-brass text-ink hover:bg-brass-soft"
                     : "border border-ink text-ink hover:bg-ink hover:text-cream"
@@ -462,7 +469,7 @@ function Pricing() {
           ))}
         </div>
 
-        <div className="mx-auto mt-10 max-w-2xl rounded-2xl border border-brass/40 bg-white p-6 text-center">
+        <div className="lift mx-auto mt-10 max-w-2xl rounded-2xl border border-brass/40 bg-white p-6 text-center shadow-sm">
           <p className="font-display text-lg font-semibold text-ink">The mirror-check promise</p>
           <p className="mt-2 text-sm leading-relaxed text-slate-muted">
             No fitting fee is due unless you approve the final look in the mirror. Pay after your
@@ -492,7 +499,7 @@ function Testimonials() {
           {TESTIMONIALS.map((t) => (
             <figure
               key={t.name}
-              className="flex w-[85%] shrink-0 snap-start flex-col rounded-2xl border border-white/10 bg-white/[0.03] p-7 md:w-auto"
+              className="card-glass lift flex w-[85%] shrink-0 snap-start flex-col rounded-2xl border border-white/10 p-7 hover:border-white/25 md:w-auto"
             >
               <div className="flex gap-1 text-brass">
                 {Array.from({ length: 5 }).map((_, i) => (
@@ -563,7 +570,7 @@ function FinalCta() {
         <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
           <Link
             to="/book"
-            className="inline-flex items-center justify-center gap-2 rounded-full bg-ink px-7 py-3.5 text-sm font-semibold text-cream transition hover:bg-ink-soft"
+            className="btn-lift inline-flex items-center justify-center gap-2 rounded-full bg-ink px-7 py-3.5 text-sm font-semibold text-cream hover:bg-ink-soft"
           >
             Book a Free Home Consultation <ArrowRight className="h-4 w-4" />
           </Link>
@@ -571,7 +578,7 @@ function FinalCta() {
             href={waLink()}
             target="_blank"
             rel="noreferrer"
-            className="inline-flex items-center justify-center gap-2 rounded-full border border-ink/30 px-7 py-3.5 text-sm font-medium text-ink transition hover:border-brass hover:text-brass"
+            className="btn-lift inline-flex items-center justify-center gap-2 rounded-full border border-ink/30 px-7 py-3.5 text-sm font-medium text-ink hover:border-brass hover:text-brass"
           >
             <MessageCircle className="h-4 w-4" /> WhatsApp us
           </a>

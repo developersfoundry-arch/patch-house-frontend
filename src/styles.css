@@ -165,6 +165,25 @@
   border-color: oklch(0 0 0 / 10%);
 }
 
+/* Glassy card surfaces for dark sections.
+   Dark mode: faint white glass over navy. Light mode: the section flips to
+   sand, where a 3% white tint is invisible — so cards become solid white
+   with a soft edge, matching the white cards used in light sections. */
+.card-glass {
+  background-color: oklch(1 0 0 / 0.03);
+}
+.card-glass-brass {
+  background-color: color-mix(in oklab, var(--brass) 6%, transparent);
+}
+:root[data-mode="light"] .section-dark .card-glass {
+  background-color: oklch(1 0 0 / 0.85);
+  border-color: oklch(0 0 0 / 0.08);
+  box-shadow: 0 1px 3px oklch(0 0 0 / 0.05);
+}
+:root[data-mode="light"] .section-dark .card-glass-brass {
+  background-color: color-mix(in oklab, var(--brass) 13%, oklch(1 0 0));
+}
+
 /* Grain overlay for dark sections */
 .grain {
   position: relative;
@@ -183,6 +202,52 @@
 .grain > * {
   position: relative;
   z-index: 2;
+}
+
+/* Hover lift — cards rise slightly toward the viewer.
+   Shadow color adapts to the surface via --lift-shadow. Hover-only devices
+   only; mobile taps never trigger a stuck "lifted" state. */
+.lift {
+  --lift-shadow:
+    0 14px 30px -12px oklch(0.22 0.045 250 / 0.22), 0 4px 10px -6px oklch(0.22 0.045 250 / 0.12);
+  transition:
+    transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.3s ease;
+}
+.section-dark .lift {
+  --lift-shadow: 0 16px 36px -12px oklch(0 0 0 / 0.55), 0 5px 14px -8px oklch(0 0 0 / 0.4);
+}
+:root[data-mode="light"] .section-dark .lift {
+  --lift-shadow:
+    0 14px 30px -12px oklch(0.22 0.045 250 / 0.2), 0 4px 10px -6px oklch(0.22 0.045 250 / 0.1);
+}
+@media (hover: hover) and (pointer: fine) {
+  .lift:hover {
+    transform: translateY(-4px) scale(1.01);
+    box-shadow: var(--lift-shadow);
+  }
+}
+
+/* Button micro-interaction: small rise on hover, press-down on click */
+.btn-lift {
+  transition:
+    transform 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
+}
+@media (hover: hover) and (pointer: fine) {
+  .btn-lift:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 22px -10px oklch(0 0 0 / 0.45);
+  }
+  .btn-lift:active {
+    transform: translateY(0) scale(0.98);
+    box-shadow: none;
+    transition-duration: 0.1s;
+  }
 }
 
 .brass-rule {
@@ -229,6 +294,15 @@
   }
   .pulse-ring {
     animation: none !important;
+  }
+  .lift,
+  .btn-lift {
+    transition: none;
+  }
+  .lift:hover,
+  .btn-lift:hover,
+  .btn-lift:active {
+    transform: none;
   }
 }
 

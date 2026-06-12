@@ -12,10 +12,23 @@ export function Footer() {
             <span className="text-brass">AtHome</span>
           </div>
           <p className="mt-3 text-sm text-cream/70">
-            Discreet, expert-led at-home hair patch fittings across Delhi NCR. Non-surgical hair
-            replacement for men — matched, fitted, and styled at your home, from consultation to
-            aftercare.
+            Discreet at-home hair patch fittings across Delhi NCR.
           </p>
+          <ul className="mt-4 flex flex-wrap gap-2">
+            {[
+              "Non-surgical hair replacement",
+              "Hair patch for men",
+              "Fitted & styled at home",
+              "Consultation to aftercare",
+            ].map((tag) => (
+              <li
+                key={tag}
+                className="rounded-full border border-white/10 px-3 py-1 text-xs text-cream/50"
+              >
+                {tag}
+              </li>
+            ))}
+          </ul>
         </div>
 
         <div>

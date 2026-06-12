@@ -167,7 +167,7 @@ function BookPage() {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="mt-2 flex w-full items-center justify-center gap-2 rounded-full bg-ink py-4 text-sm font-semibold text-cream transition hover:bg-ink-soft disabled:opacity-60"
+                className="btn-lift mt-2 flex w-full items-center justify-center gap-2 rounded-full bg-ink py-4 text-sm font-semibold text-cream hover:bg-ink-soft disabled:opacity-60"
               >
                 Confirm my free visit <ArrowRight className="h-4 w-4" />
               </button>

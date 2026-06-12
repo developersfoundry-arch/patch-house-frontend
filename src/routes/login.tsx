@@ -78,7 +78,7 @@ function LoginPage() {
               </div>
               <button
                 type="submit"
-                className="flex w-full items-center justify-center gap-2 rounded-full bg-brass py-3.5 text-sm font-semibold text-ink transition hover:bg-brass-soft"
+                className="btn-lift flex w-full items-center justify-center gap-2 rounded-full bg-brass py-3.5 text-sm font-semibold text-ink hover:bg-brass-soft"
               >
                 Send OTP <ArrowRight className="h-4 w-4" />
               </button>
@@ -91,7 +91,7 @@ function LoginPage() {
 
               <button
                 type="button"
-                className="flex w-full items-center justify-center gap-3 rounded-full border border-white/20 bg-white py-3 text-sm font-medium text-ink transition hover:bg-cream"
+                className="btn-lift flex w-full items-center justify-center gap-3 rounded-full border border-white/20 bg-white py-3 text-sm font-medium text-ink hover:bg-cream"
               >
                 <GoogleIcon />
                 Continue with Google
@@ -115,7 +115,7 @@ function LoginPage() {
               </div>
               <button
                 type="submit"
-                className="flex w-full items-center justify-center gap-2 rounded-full bg-brass py-3.5 text-sm font-semibold text-ink transition hover:bg-brass-soft"
+                className="btn-lift flex w-full items-center justify-center gap-2 rounded-full bg-brass py-3.5 text-sm font-semibold text-ink hover:bg-brass-soft"
               >
                 Verify &amp; continue <ArrowRight className="h-4 w-4" />
               </button>

@@ -56,7 +56,7 @@ export function Navbar() {
           </Link>
           <Link
             to="/book"
-            className="rounded-full bg-brass px-5 py-2.5 text-sm font-medium text-ink transition hover:bg-brass-soft"
+            className="btn-lift rounded-full bg-brass px-5 py-2.5 text-sm font-medium text-ink hover:bg-brass-soft"
           >
             Book Home Visit
           </Link>
