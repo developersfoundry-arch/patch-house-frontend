@@ -1,48 +1,53 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import { Sparkles, Wrench, ChevronDown, ChevronUp, CalendarDays } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { ChevronDown, ChevronUp } from "lucide-react";
 
 export const Route = createFileRoute("/dashboard/patch")({
   component: PatchPage,
 });
 
 const PATCH = {
-  id: "SAH-P-001",
-  type: "Full lace hair patch",
-  base: "Swiss lace",
-  color: "Natural black (1B)",
-  density: "Medium (120%)",
-  length: "3 inches",
+  name: "Full Cap System",
+  subtitle: "French Lace + PU Perimeter · Natural Black (#1B)",
   fittedOn: "25 May 2026",
-  fittedBy: "Priya Sharma",
-  nextMaintenance: "6 Jul 2026",
-  maintenanceCycle: "Every 6 weeks",
-  daysLeft: 23,
-  progressPct: 45,
+  daysToService: 23,
+  specs: [
+    { label: "Type", value: "Full Cap System" },
+    { label: "Base", value: "French Lace + PU Perimeter" },
+    { label: "Color", value: "Natural Black (#1B)" },
+    { label: "Density", value: "Medium (110%)" },
+    { label: "Length", value: "6 inches" },
+    { label: "Fitted on", value: "25 May 2026" },
+  ],
 };
 
 const CARE_STEPS = [
   {
     title: "Daily care",
     content:
-      "Use a soft-bristle brush; stroke from hairline back. Avoid excessive heat — hairdryer on low, 15 cm away. At night, loosely cover with a satin cap to reduce friction and tangling.",
+      "Use a soft-bristle brush and stroke gently from the hairline back. Avoid pulling at the perimeter. A satin cap at night reduces friction and adds days to your patch.",
   },
   {
-    title: "Washing (twice a week)",
+    title: "Washing",
     content:
-      "Use a mild, sulfate-free shampoo. Wash with lukewarm water in one direction — never rub in circles. Pat dry gently with a microfiber towel. Let air-dry before styling.",
+      "Wash twice a week with a mild sulfate-free shampoo and lukewarm water in one direction — never rub in circles. Pat dry gently with a microfiber towel and let air-dry before styling.",
   },
   {
-    title: "Re-bonding (every 2–3 weeks)",
+    title: "Re-bonding",
     content:
-      "When you feel the edges lifting, contact us to schedule a re-bonding visit. Do not attempt to re-apply tape or adhesive yourself — incorrect bonding damages the base.",
+      "When you feel edges lifting, contact us to schedule a re-bonding visit. Do not attempt to re-apply tape or adhesive yourself — incorrect bonding damages the base material.",
   },
   {
     title: "Avoiding damage",
     content:
-      "Keep away from chlorinated water (swimming pools) without a silicone cap. Limit salt-water exposure. Remove the patch before extended sun exposure or harsh chemical treatments.",
+      "Keep away from chlorinated water without a silicone cap. Limit salt-water exposure. Remove the patch before extended sun exposure or harsh chemical treatments.",
   },
+];
+
+const SPEC_ROWS = [
+  [PATCH.specs[0], PATCH.specs[1]],
+  [PATCH.specs[2], PATCH.specs[3]],
+  [PATCH.specs[4], PATCH.specs[5]],
 ];
 
 export default function PatchPage() {
@@ -50,123 +55,77 @@ export default function PatchPage() {
 
   return (
     <div className="space-y-8">
-      {/* Header */}
-      <div>
-        <h1 className="font-display text-2xl font-semibold text-foreground sm:text-3xl">
-          My Hair Patch
-        </h1>
-        <p className="mt-1 text-sm text-slate-muted">
-          Specifications, maintenance schedule &amp; care guide
-        </p>
+      <h1 className="font-display text-2xl font-semibold text-foreground sm:text-3xl">My Patch</h1>
+
+      {/* Product hero */}
+      <div className="flex items-start justify-between gap-6 overflow-hidden rounded-2xl bg-brass/[0.07] p-6 sm:p-8">
+        <div className="min-w-0 flex-1">
+          <p className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-widest text-emerald-500">
+            <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+            Active System
+          </p>
+          <h2 className="mt-2 font-display text-2xl font-semibold text-foreground sm:text-3xl">
+            {PATCH.name}
+          </h2>
+          <p className="mt-1 text-sm text-muted-foreground">{PATCH.subtitle}</p>
+          <div className="mt-4 flex flex-wrap gap-x-5 gap-y-1.5 text-sm text-muted-foreground">
+            <span>📅 Fitted {PATCH.fittedOn}</span>
+            <span>✦ {PATCH.daysToService} days to next service</span>
+          </div>
+        </div>
+        <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-brass font-display text-xl font-bold text-ink">
+          PH
+        </div>
       </div>
 
-      {/* Specs + maintenance row */}
-      <div className="grid gap-4 lg:grid-cols-2">
-        {/* Specifications */}
-        <div className="rounded-2xl border border-border bg-card p-5 shadow-sm">
-          <div className="flex items-center gap-2">
-            <Sparkles className="h-4 w-4 text-brass" />
-            <h2 className="font-display text-base font-semibold text-card-foreground">
-              Specifications
-            </h2>
-            <span className="ml-auto text-xs text-slate-muted">{PATCH.id}</span>
-          </div>
-          <dl className="mt-4 space-y-3">
-            {[
-              ["Type", PATCH.type],
-              ["Base material", PATCH.base],
-              ["Hair colour", PATCH.color],
-              ["Density", PATCH.density],
-              ["Length", PATCH.length],
-              ["Fitted on", PATCH.fittedOn],
-              ["Fitted by", PATCH.fittedBy],
-            ].map(([k, v]) => (
-              <div
-                key={k}
-                className="flex items-center justify-between gap-4 border-b border-border pb-2.5 last:border-0 last:pb-0"
-              >
-                <dt className="text-sm text-slate-muted">{k}</dt>
-                <dd className="text-right text-sm font-medium text-card-foreground">{v}</dd>
-              </div>
-            ))}
-          </dl>
+      {/* Specifications */}
+      <div>
+        <div className="flex items-baseline justify-between">
+          <h2 className="font-display text-xl font-semibold text-foreground">Specifications</h2>
+          <p className="text-xs text-muted-foreground">Custom-built for you</p>
         </div>
-
-        {/* Maintenance */}
-        <div className="rounded-2xl border border-border bg-card p-5 shadow-sm">
-          <div className="flex items-center gap-2">
-            <Wrench className="h-4 w-4 text-brass" />
-            <h2 className="font-display text-base font-semibold text-card-foreground">
-              Maintenance Schedule
-            </h2>
-          </div>
-          <div className="mt-4">
-            <div className="flex items-center justify-between">
-              <p className="text-sm text-slate-muted">Cycle</p>
-              <p className="text-sm font-medium text-card-foreground">{PATCH.maintenanceCycle}</p>
-            </div>
-            <div className="mt-4">
-              <div className="flex items-center justify-between text-sm">
-                <span className="text-slate-muted">Progress</span>
-                <span className="font-medium text-card-foreground">{PATCH.progressPct}%</span>
-              </div>
-              <div className="mt-2 h-3 w-full overflow-hidden rounded-full bg-ink/10">
-                <div
-                  className={cn(
-                    "h-full rounded-full transition-all duration-700",
-                    PATCH.progressPct > 75 ? "bg-amber-400" : "bg-brass",
-                  )}
-                  style={{ width: `${PATCH.progressPct}%` }}
-                />
-              </div>
-              <div className="mt-2 flex justify-between text-xs text-slate-muted">
-                <span>{PATCH.fittedOn}</span>
-                <span>Due {PATCH.nextMaintenance}</span>
-              </div>
-            </div>
-            <div className="mt-5 rounded-xl bg-brass/10 px-4 py-3">
-              <div className="flex items-center gap-2">
-                <CalendarDays className="h-4 w-4 text-brass" />
-                <p className="text-sm font-semibold text-card-foreground">
-                  Next service: {PATCH.nextMaintenance}
-                </p>
-              </div>
-              <p className="mt-0.5 text-xs text-slate-muted">
-                {PATCH.daysLeft} days remaining · Book in advance to lock your preferred slot
-              </p>
-            </div>
-            <Link
-              to="/book"
-              className="mt-4 flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl bg-ink py-2.5 text-sm font-semibold text-cream transition hover:bg-ink-soft"
+        <div className="mt-3 overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
+          {SPEC_ROWS.map((row, ri) => (
+            <div
+              key={ri}
+              className="grid grid-cols-2 divide-x divide-border border-b border-border last:border-b-0"
             >
-              Schedule maintenance visit
-            </Link>
-          </div>
+              {row.map((spec) => (
+                <div key={spec.label} className="p-4">
+                  <p className="text-xs font-medium uppercase tracking-widest text-brass/70">
+                    {spec.label}
+                  </p>
+                  <p className="mt-1 text-sm font-medium text-card-foreground">{spec.value}</p>
+                </div>
+              ))}
+            </div>
+          ))}
         </div>
       </div>
 
       {/* Care guide */}
       <div>
-        <h2 className="mb-3 text-xs font-medium uppercase tracking-widest text-slate-muted">
-          Care Guide
-        </h2>
-        <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
+        <div className="flex items-baseline justify-between">
+          <h2 className="font-display text-xl font-semibold text-foreground">Care guide</h2>
+          <p className="text-xs text-muted-foreground">Tap to expand</p>
+        </div>
+        <div className="mt-3 overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
           {CARE_STEPS.map((step, i) => (
-            <div key={step.title} className={cn("border-b border-border last:border-0")}>
+            <div key={step.title} className="border-b border-border last:border-0">
               <button
                 onClick={() => setOpenIdx(openIdx === i ? null : i)}
-                className="flex w-full cursor-pointer items-center justify-between gap-4 px-5 py-4 text-left transition hover:bg-ink/4"
+                className="flex w-full cursor-pointer items-center justify-between gap-4 px-5 py-4 text-left transition hover:bg-foreground/[0.03]"
               >
                 <span className="font-medium text-card-foreground">{step.title}</span>
                 {openIdx === i ? (
-                  <ChevronUp className="h-4 w-4 shrink-0 text-slate-muted" />
+                  <ChevronUp className="h-4 w-4 shrink-0 text-muted-foreground" />
                 ) : (
-                  <ChevronDown className="h-4 w-4 shrink-0 text-slate-muted" />
+                  <ChevronDown className="h-4 w-4 shrink-0 text-muted-foreground" />
                 )}
               </button>
               {openIdx === i && (
-                <div className="border-t border-border bg-ink/3 px-5 py-4">
-                  <p className="text-sm text-slate-muted leading-relaxed">{step.content}</p>
+                <div className="border-t border-border px-5 py-4">
+                  <p className="text-sm leading-relaxed text-muted-foreground">{step.content}</p>
                 </div>
               )}
             </div>

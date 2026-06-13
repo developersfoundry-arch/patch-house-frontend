@@ -16,10 +16,8 @@ import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as BookRouteImport } from './routes/book'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as DashboardIndexRouteImport } from './routes/dashboard/index'
-import { Route as DashboardSupportRouteImport } from './routes/dashboard/support'
 import { Route as DashboardProfileRouteImport } from './routes/dashboard/profile'
 import { Route as DashboardPatchRouteImport } from './routes/dashboard/patch'
-import { Route as DashboardAppointmentsRouteImport } from './routes/dashboard/appointments'
 
 const TermsRoute = TermsRouteImport.update({
   id: '/terms',
@@ -56,11 +54,6 @@ const DashboardIndexRoute = DashboardIndexRouteImport.update({
   path: '/',
   getParentRoute: () => DashboardRoute,
 } as any)
-const DashboardSupportRoute = DashboardSupportRouteImport.update({
-  id: '/support',
-  path: '/support',
-  getParentRoute: () => DashboardRoute,
-} as any)
 const DashboardProfileRoute = DashboardProfileRouteImport.update({
   id: '/profile',
   path: '/profile',
@@ -71,11 +64,6 @@ const DashboardPatchRoute = DashboardPatchRouteImport.update({
   path: '/patch',
   getParentRoute: () => DashboardRoute,
 } as any)
-const DashboardAppointmentsRoute = DashboardAppointmentsRouteImport.update({
-  id: '/appointments',
-  path: '/appointments',
-  getParentRoute: () => DashboardRoute,
-} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -84,10 +72,8 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/privacy': typeof PrivacyRoute
   '/terms': typeof TermsRoute
-  '/dashboard/appointments': typeof DashboardAppointmentsRoute
   '/dashboard/patch': typeof DashboardPatchRoute
   '/dashboard/profile': typeof DashboardProfileRoute
-  '/dashboard/support': typeof DashboardSupportRoute
   '/dashboard/': typeof DashboardIndexRoute
 }
 export interface FileRoutesByTo {
@@ -96,10 +82,8 @@ export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/privacy': typeof PrivacyRoute
   '/terms': typeof TermsRoute
-  '/dashboard/appointments': typeof DashboardAppointmentsRoute
   '/dashboard/patch': typeof DashboardPatchRoute
   '/dashboard/profile': typeof DashboardProfileRoute
-  '/dashboard/support': typeof DashboardSupportRoute
   '/dashboard': typeof DashboardIndexRoute
 }
 export interface FileRoutesById {
@@ -110,10 +94,8 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/privacy': typeof PrivacyRoute
   '/terms': typeof TermsRoute
-  '/dashboard/appointments': typeof DashboardAppointmentsRoute
   '/dashboard/patch': typeof DashboardPatchRoute
   '/dashboard/profile': typeof DashboardProfileRoute
-  '/dashboard/support': typeof DashboardSupportRoute
   '/dashboard/': typeof DashboardIndexRoute
 }
 export interface FileRouteTypes {
@@ -125,10 +107,8 @@ export interface FileRouteTypes {
     | '/login'
     | '/privacy'
     | '/terms'
-    | '/dashboard/appointments'
     | '/dashboard/patch'
     | '/dashboard/profile'
-    | '/dashboard/support'
     | '/dashboard/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -137,10 +117,8 @@ export interface FileRouteTypes {
     | '/login'
     | '/privacy'
     | '/terms'
-    | '/dashboard/appointments'
     | '/dashboard/patch'
     | '/dashboard/profile'
-    | '/dashboard/support'
     | '/dashboard'
   id:
     | '__root__'
@@ -150,10 +128,8 @@ export interface FileRouteTypes {
     | '/login'
     | '/privacy'
     | '/terms'
-    | '/dashboard/appointments'
     | '/dashboard/patch'
     | '/dashboard/profile'
-    | '/dashboard/support'
     | '/dashboard/'
   fileRoutesById: FileRoutesById
 }
@@ -217,13 +193,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardIndexRouteImport
       parentRoute: typeof DashboardRoute
     }
-    '/dashboard/support': {
-      id: '/dashboard/support'
-      path: '/support'
-      fullPath: '/dashboard/support'
-      preLoaderRoute: typeof DashboardSupportRouteImport
-      parentRoute: typeof DashboardRoute
-    }
     '/dashboard/profile': {
       id: '/dashboard/profile'
       path: '/profile'
@@ -238,29 +207,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardPatchRouteImport
       parentRoute: typeof DashboardRoute
     }
-    '/dashboard/appointments': {
-      id: '/dashboard/appointments'
-      path: '/appointments'
-      fullPath: '/dashboard/appointments'
-      preLoaderRoute: typeof DashboardAppointmentsRouteImport
-      parentRoute: typeof DashboardRoute
-    }
   }
 }
 
 interface DashboardRouteChildren {
-  DashboardAppointmentsRoute: typeof DashboardAppointmentsRoute
   DashboardPatchRoute: typeof DashboardPatchRoute
   DashboardProfileRoute: typeof DashboardProfileRoute
-  DashboardSupportRoute: typeof DashboardSupportRoute
   DashboardIndexRoute: typeof DashboardIndexRoute
 }
 
 const DashboardRouteChildren: DashboardRouteChildren = {
-  DashboardAppointmentsRoute: DashboardAppointmentsRoute,
   DashboardPatchRoute: DashboardPatchRoute,
   DashboardProfileRoute: DashboardProfileRoute,
-  DashboardSupportRoute: DashboardSupportRoute,
   DashboardIndexRoute: DashboardIndexRoute,
 }
 
