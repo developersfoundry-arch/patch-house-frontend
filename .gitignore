@@ -16,6 +16,10 @@ dist-ssr
 .nitro
 *.local
 
+# Vercel build output — Nitro generates .vercel/output/ at build time.
+# Must NOT be committed or Vercel will serve the pre-built files and skip running vite build.
+.vercel/
+
 # Wrangler / Cloudflare
 .wrangler/
 .dev.vars
