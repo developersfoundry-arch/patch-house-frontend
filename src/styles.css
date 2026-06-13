@@ -250,35 +250,35 @@
   }
 }
 
-/* Sidebar: always deep dark regardless of light/dark mode */
+/* Sidebar: always the same deep navy as the main page dark sections */
 .dashboard-sidebar {
-  background-color: oklch(0.1 0.025 260);
+  background-color: var(--ink);
 }
 
-/* Dashboard content area: warm charcoal in dark mode, warm cream in light mode */
+/* Dashboard content area: same tokens as the main page section-dark (dark) and root (light) */
 .dashboard-area {
-  --background: oklch(0.14 0.015 80);
+  --background: var(--ink);
   --foreground: var(--cream);
-  --card: oklch(0.19 0.018 80);
+  --card: var(--ink-soft);
   --card-foreground: var(--cream);
-  --muted: oklch(0.17 0.015 80);
-  --muted-foreground: oklch(0.62 0.02 85);
-  --slate-muted: oklch(0.62 0.02 85);
-  --border: oklch(1 0 0 / 9%);
-  --input: oklch(1 0 0 / 11%);
+  --muted: var(--ink-soft);
+  --muted-foreground: oklch(0.78 0.025 250);
+  --slate-muted: oklch(0.75 0.025 250);
+  --border: oklch(1 0 0 / 12%);
+  --input: oklch(1 0 0 / 14%);
   background-color: var(--background);
   color: var(--foreground);
 }
 :root[data-mode="light"] .dashboard-area {
-  --background: oklch(0.96 0.012 85);
+  --background: var(--cream);
   --foreground: var(--ink);
   --card: oklch(1 0 0);
   --card-foreground: var(--ink);
-  --muted: oklch(0.92 0.015 85);
-  --muted-foreground: oklch(0.52 0.025 260);
-  --slate-muted: oklch(0.52 0.025 260);
-  --border: oklch(0 0 0 / 8%);
-  --input: oklch(0 0 0 / 6%);
+  --muted: var(--cream-soft);
+  --muted-foreground: var(--slate-muted);
+  --slate-muted: oklch(0.55 0.025 250);
+  --border: oklch(0.88 0.012 90);
+  --input: oklch(0.9 0.012 90);
   background-color: var(--background);
   color: var(--foreground);
 }
