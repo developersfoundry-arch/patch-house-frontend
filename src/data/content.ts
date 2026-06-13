@@ -2,7 +2,7 @@
 
 export const BRAND = {
   name: "PatchHouse",
-  whatsappNumber: "919999999999", // E.164 without '+', placeholder
+  whatsappNumber: "918437342545",
   whatsappMessage:
     "Hi! I'm interested in a free at-home hair patch consultation. My name is ____ and I'm located in ____ (Delhi NCR). Please share the next available slot.",
   cities: ["Delhi", "Noida", "Greater Noida", "Gurugram", "Ghaziabad", "Faridabad"],

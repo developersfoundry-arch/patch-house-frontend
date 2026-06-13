@@ -1,9 +1,12 @@
 import { createFileRoute, Outlet, Link, useNavigate, useRouterState } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Home, Sparkles, User, LogOut, Menu, X } from "lucide-react";
-import { isAuthenticated, getAuthUser, clearAuthUser } from "@/lib/auth";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { clearAuthUser } from "@/lib/auth";
+import { api } from "@/lib/api";
 import { BRAND, waLink } from "@/data/content";
 import { cn } from "@/lib/utils";
+import type { User as UserType } from "@/lib/types";
 
 const NAV_ITEMS = [
   { to: "/dashboard", label: "Home", icon: Home, exact: true },
@@ -17,21 +20,39 @@ export const Route = createFileRoute("/dashboard")({
 
 function DashboardLayout() {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const user = getAuthUser();
+
+  const { data: user, isLoading, isError } = useQuery({
+    queryKey: ["me"],
+    queryFn: () => api.get<UserType>("/me"),
+    retry: false,
+    staleTime: 5 * 60 * 1000,
+  });
 
   useEffect(() => {
-    if (!isAuthenticated()) {
-      navigate({ to: "/login", replace: true });
-    }
-  }, [navigate]);
+    if (isError) navigate({ to: "/login", replace: true });
+  }, [isError, navigate]);
 
-  if (!user) return <div className="min-h-screen bg-background" />;
-
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    try { await api.post("/auth/logout"); } catch { /* ignore */ }
     clearAuthUser();
+    queryClient.clear();
     window.location.href = "/";
   };
+
+  if (isLoading) {
+    return (
+      <div className="flex h-screen items-center justify-center bg-background">
+        <div className="h-6 w-6 animate-spin rounded-full border-2 border-brass border-t-transparent" />
+      </div>
+    );
+  }
+
+  if (!user) return null;
+
+  const initial = (user.name?.[0] ?? user.phone?.[0] ?? "U").toUpperCase();
+  const displayName = user.name || `+91 ${user.phone}`;
 
   return (
     <div className="flex h-screen overflow-hidden">
@@ -54,15 +75,13 @@ function DashboardLayout() {
             {BRAND.name.replace("House", "")}
             <span className="text-brass">House</span>
           </Link>
-          <div className="flex items-center gap-1">
-            <button
-              onClick={() => setSidebarOpen(false)}
-              aria-label="Close menu"
-              className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-lg text-cream/60 hover:bg-white/5 hover:text-cream lg:hidden"
-            >
-              <X className="h-4 w-4" />
-            </button>
-          </div>
+          <button
+            onClick={() => setSidebarOpen(false)}
+            aria-label="Close menu"
+            className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-lg text-cream/60 hover:bg-white/5 hover:text-cream lg:hidden"
+          >
+            <X className="h-4 w-4" />
+          </button>
         </div>
 
         {/* Nav */}
@@ -91,10 +110,10 @@ function DashboardLayout() {
         <div className="border-t border-white/10 p-4">
           <div className="flex items-center gap-3">
             <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-brass text-sm font-bold text-ink">
-              {user.name[0]?.toUpperCase() ?? "U"}
+              {initial}
             </div>
             <div className="min-w-0 flex-1">
-              <p className="truncate text-sm font-medium text-cream">{user.name}</p>
+              <p className="truncate text-sm font-medium text-cream">{displayName}</p>
               <p className="truncate text-xs text-cream/50">+91 {user.phone}</p>
             </div>
             <button

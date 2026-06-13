@@ -1,8 +1,13 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { ArrowRight } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { signInWithPhoneNumber, RecaptchaVerifier, type ConfirmationResult } from "firebase/auth";
 import { BRAND } from "@/data/content";
-import { setAuthUser, isAuthenticated, DEMO_PHONE, DEMO_OTP } from "@/lib/auth";
+import { setAuthUser, isAuthenticated } from "@/lib/auth";
+import { auth } from "@/lib/firebase";
+import { api } from "@/lib/api";
+import type { User } from "@/lib/types";
 
 export const Route = createFileRoute("/login")({
   head: () => ({
@@ -20,39 +25,85 @@ function LoginPage() {
   const [phone, setPhone] = useState("");
   const [otp, setOtp] = useState("");
   const [err, setErr] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
 
-  if (isAuthenticated()) {
-    navigate({ to: "/dashboard", replace: true });
-    return null;
-  }
+  const verifierRef = useRef<RecaptchaVerifier | null>(null);
+  const confirmationRef = useRef<ConfirmationResult | null>(null);
 
-  const submitPhone = (e: React.FormEvent) => {
+  // If already authenticated locally, verify with API and redirect
+  const { data: existingUser } = useQuery({
+    queryKey: ["me"],
+    queryFn: () => api.get<User>("/me"),
+    retry: false,
+    enabled: isAuthenticated(),
+  });
+
+  useEffect(() => {
+    if (existingUser) navigate({ to: "/dashboard", replace: true });
+  }, [existingUser, navigate]);
+
+  useEffect(() => {
+    verifierRef.current = new RecaptchaVerifier(auth, "recaptcha-container", {
+      size: "invisible",
+    });
+    return () => {
+      verifierRef.current?.clear();
+      verifierRef.current = null;
+    };
+  }, []);
+
+  const submitPhone = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!/^\d{10}$/.test(phone)) {
       setErr("Please enter a 10-digit mobile number");
       return;
     }
     setErr(null);
-    setStep("otp");
+    setLoading(true);
+    try {
+      if (!verifierRef.current) {
+        verifierRef.current = new RecaptchaVerifier(auth, "recaptcha-container", {
+          size: "invisible",
+        });
+      }
+      const confirmation = await signInWithPhoneNumber(auth, `+91${phone}`, verifierRef.current);
+      confirmationRef.current = confirmation;
+      setStep("otp");
+    } catch {
+      setErr("Failed to send OTP. Please check the number and try again.");
+      verifierRef.current?.clear();
+      verifierRef.current = new RecaptchaVerifier(auth, "recaptcha-container", {
+        size: "invisible",
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const submitOtp = (e: React.FormEvent) => {
+  const submitOtp = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!/^\d{6}$/.test(otp)) {
       setErr("Enter the 6-digit OTP");
       return;
     }
-    if (phone !== DEMO_PHONE || otp !== DEMO_OTP) {
-      setErr("Incorrect OTP. Please try again.");
-      return;
-    }
     setErr(null);
-    setAuthUser({ phone, name: "Rahul" });
-    navigate({ to: "/dashboard" });
+    setLoading(true);
+    try {
+      const credential = await confirmationRef.current!.confirm(otp);
+      const idToken = await credential.user.getIdToken();
+      const user = await api.post<User>("/auth/firebase", { id_token: idToken });
+      setAuthUser({ id: user.id, phone: user.phone, name: user.name });
+      navigate({ to: "/dashboard", replace: true });
+    } catch {
+      setErr("Incorrect OTP. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <div className="section-dark grain flex min-h-screen items-center justify-center px-5 py-16">
+      <div id="recaptcha-container" />
       <div className="w-full max-w-md">
         <Link
           to="/"
@@ -89,9 +140,10 @@ function LoginPage() {
               </div>
               <button
                 type="submit"
-                className="btn-lift flex w-full cursor-pointer items-center justify-center gap-2 rounded-full bg-brass py-3.5 text-sm font-semibold text-ink hover:bg-brass-soft"
+                disabled={loading}
+                className="btn-lift flex w-full cursor-pointer items-center justify-center gap-2 rounded-full bg-brass py-3.5 text-sm font-semibold text-ink hover:bg-brass-soft disabled:opacity-60"
               >
-                Send OTP <ArrowRight className="h-4 w-4" />
+                {loading ? "Sending…" : <>Send OTP <ArrowRight className="h-4 w-4" /></>}
               </button>
             </form>
           ) : (
@@ -112,17 +164,14 @@ function LoginPage() {
               </div>
               <button
                 type="submit"
-                className="btn-lift flex w-full cursor-pointer items-center justify-center gap-2 rounded-full bg-brass py-3.5 text-sm font-semibold text-ink hover:bg-brass-soft"
+                disabled={loading}
+                className="btn-lift flex w-full cursor-pointer items-center justify-center gap-2 rounded-full bg-brass py-3.5 text-sm font-semibold text-ink hover:bg-brass-soft disabled:opacity-60"
               >
-                Verify &amp; continue <ArrowRight className="h-4 w-4" />
+                {loading ? "Verifying…" : <>Verify &amp; continue <ArrowRight className="h-4 w-4" /></>}
               </button>
               <button
                 type="button"
-                onClick={() => {
-                  setStep("phone");
-                  setOtp("");
-                  setErr(null);
-                }}
+                onClick={() => { setStep("phone"); setOtp(""); setErr(null); }}
                 className="block w-full cursor-pointer text-center text-xs text-cream/60 hover:text-brass"
               >
                 Use a different number

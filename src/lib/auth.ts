@@ -1,9 +1,7 @@
 const AUTH_KEY = "sah-auth";
 
-export const DEMO_PHONE = "9876543210";
-export const DEMO_OTP = "111111";
-
 export interface AuthUser {
+  id: string;
   phone: string;
   name: string;
 }

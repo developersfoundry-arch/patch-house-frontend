@@ -1,11 +1,16 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { ArrowRight } from "lucide-react";
+import { signInWithPhoneNumber, RecaptchaVerifier, type ConfirmationResult } from "firebase/auth";
 import { BRAND } from "@/data/content";
-import { setAuthUser, DEMO_OTP } from "@/lib/auth";
+import { setAuthUser } from "@/lib/auth";
+import { auth } from "@/lib/firebase";
+import { api } from "@/lib/api";
+import { toast } from "sonner";
+import type { User, Appointment } from "@/lib/types";
 
 export const Route = createFileRoute("/book")({
   head: () => ({
@@ -20,19 +25,12 @@ export const Route = createFileRoute("/book")({
   component: BookPage,
 });
 
-const schema = z.object({
-  name: z.string().min(2, "Please enter your full name"),
-  phone: z.string().regex(/^\d{10}$/, "Please enter a 10-digit mobile number"),
-  city: z.string().min(1, "Please select your city"),
-  address: z.string().min(8, "Please enter your full address"),
-  date: z.string().min(1, "Pick a date"),
-  slot: z.string().min(1, "Pick a time slot"),
-  concern: z.string().min(1, "Please pick one"),
-  notes: z.string().optional(),
-});
-type FormValues = z.infer<typeof schema>;
+const SLOTS = [
+  { label: "Morning (9 AM – 12 PM)", value: "morning" as const },
+  { label: "Afternoon (12 PM – 4 PM)", value: "afternoon" as const },
+  { label: "Evening (4 PM – 8 PM)", value: "evening" as const },
+];
 
-const SLOTS = ["Morning 9–12", "Afternoon 12–4", "Evening 4–8"];
 const CONCERNS = [
   "Receding hairline",
   "Crown thinning",
@@ -40,6 +38,20 @@ const CONCERNS = [
   "Patchy loss",
   "Not sure",
 ];
+
+const schema = z.object({
+  name: z.string().min(2, "Please enter your full name"),
+  phone: z.string().regex(/^\d{10}$/, "Please enter a 10-digit mobile number"),
+  city: z.string().min(1, "Please select your city"),
+  address: z.string().min(8, "Please enter your full address"),
+  date: z.string().min(1, "Pick a date"),
+  slot: z.enum(["morning", "afternoon", "evening"], {
+    errorMap: () => ({ message: "Pick a time slot" }),
+  }),
+  concern: z.string().min(1, "Please pick one"),
+  notes: z.string().optional(),
+});
+type FormValues = z.infer<typeof schema>;
 
 const fieldCls =
   "mt-2 w-full rounded-xl border border-ink/15 bg-white px-4 py-3 text-sm text-ink outline-none transition focus:border-brass";
@@ -51,7 +63,11 @@ function BookPage() {
   const [bookingData, setBookingData] = useState<FormValues | null>(null);
   const [otp, setOtp] = useState("");
   const [otpErr, setOtpErr] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
   const today = new Date().toISOString().split("T")[0];
+
+  const verifierRef = useRef<RecaptchaVerifier | null>(null);
+  const confirmationRef = useRef<ConfirmationResult | null>(null);
 
   const {
     register,
@@ -59,29 +75,86 @@ function BookPage() {
     formState: { errors, isSubmitting },
   } = useForm<FormValues>({ resolver: zodResolver(schema) });
 
-  const onSubmit = (data: FormValues) => {
+  useEffect(() => {
+    verifierRef.current = new RecaptchaVerifier(auth, "recaptcha-container", {
+      size: "invisible",
+    });
+    return () => {
+      verifierRef.current?.clear();
+      verifierRef.current = null;
+    };
+  }, []);
+
+  const onSubmit = async (data: FormValues) => {
     setBookingData(data);
-    setStep("otp");
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    try {
+      if (!verifierRef.current) {
+        verifierRef.current = new RecaptchaVerifier(auth, "recaptcha-container", {
+          size: "invisible",
+        });
+      }
+      await signInWithPhoneNumber(auth, `+91${data.phone}`, verifierRef.current).then(
+        (conf) => { confirmationRef.current = conf; }
+      );
+      setStep("otp");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } catch {
+      toast.error("Failed to send OTP. Please try again.");
+      verifierRef.current?.clear();
+      verifierRef.current = new RecaptchaVerifier(auth, "recaptcha-container", {
+        size: "invisible",
+      });
+    }
   };
 
-  const submitOtp = (e: React.FormEvent) => {
+  const submitOtp = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!/^\d{6}$/.test(otp)) {
-      setOtpErr("Enter the 6-digit OTP");
-      return;
-    }
-    if (otp !== DEMO_OTP) {
-      setOtpErr("Incorrect OTP. Please try again.");
-      return;
-    }
+    if (!/^\d{6}$/.test(otp)) { setOtpErr("Enter the 6-digit OTP"); return; }
+    if (!bookingData) return;
     setOtpErr(null);
-    setAuthUser({ phone: bookingData!.phone, name: bookingData!.name });
-    navigate({ to: "/dashboard" });
+    setLoading(true);
+    try {
+      // 1. Verify OTP with Firebase
+      const credential = await confirmationRef.current!.confirm(otp);
+      const idToken = await credential.user.getIdToken();
+
+      // 2. Authenticate with backend — creates/upserts user, sets cookie
+      const user = await api.post<User>("/auth/firebase", { id_token: idToken });
+
+      // 3. Save profile details from the booking form
+      await api.put<User>("/me", {
+        name: bookingData.name,
+        address: bookingData.address,
+        city: bookingData.city,
+        concern: bookingData.concern,
+      });
+
+      // 4. Create the appointment
+      const appt = await api.post<Appointment>("/appointments", {
+        service_type: "Hair Patch Fitting",
+        preferred_date: bookingData.date,
+        time_slot: bookingData.slot,
+        address: bookingData.address,
+        city: bookingData.city,
+        notes: bookingData.notes ?? "",
+      });
+
+      // 5. Cache user locally
+      setAuthUser({ id: user.id, phone: user.phone, name: bookingData.name });
+
+      toast.success(`Booking confirmed! Ref: ${appt.booking_ref}`);
+      navigate({ to: "/dashboard", replace: true });
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : "Something went wrong";
+      setOtpErr(msg.includes("invalid") || msg.includes("OTP") ? "Incorrect OTP. Please try again." : msg);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <div className="section-dark grain min-h-screen px-5 py-14 sm:py-20">
+      <div id="recaptcha-container" />
       <div className="mx-auto max-w-xl">
         <Link
           to="/"
@@ -119,17 +192,14 @@ function BookPage() {
               </div>
               <button
                 type="submit"
-                className="btn-lift flex w-full cursor-pointer items-center justify-center gap-2 rounded-full bg-brass py-3.5 text-sm font-semibold text-ink hover:bg-brass-soft"
+                disabled={loading}
+                className="btn-lift flex w-full cursor-pointer items-center justify-center gap-2 rounded-full bg-brass py-3.5 text-sm font-semibold text-ink hover:bg-brass-soft disabled:opacity-60"
               >
-                Confirm my visit <ArrowRight className="h-4 w-4" />
+                {loading ? "Confirming…" : <>Confirm my visit <ArrowRight className="h-4 w-4" /></>}
               </button>
               <button
                 type="button"
-                onClick={() => {
-                  setStep("form");
-                  setOtp("");
-                  setOtpErr(null);
-                }}
+                onClick={() => { setStep("form"); setOtp(""); setOtpErr(null); }}
                 className="block w-full cursor-pointer text-center text-xs text-cream/60 hover:text-brass"
               >
                 ← Edit booking details
@@ -173,12 +243,8 @@ function BookPage() {
 
               <Field label="City" error={errors.city?.message}>
                 <select className={fieldCls} defaultValue="" {...register("city")}>
-                  <option value="" disabled>
-                    Select your city
-                  </option>
-                  {BRAND.cities.map((c) => (
-                    <option key={c}>{c}</option>
-                  ))}
+                  <option value="" disabled>Select your city</option>
+                  {BRAND.cities.map((c) => <option key={c}>{c}</option>)}
                 </select>
               </Field>
 
@@ -197,11 +263,9 @@ function BookPage() {
                 </Field>
                 <Field label="Time slot" error={errors.slot?.message}>
                   <select className={fieldCls} defaultValue="" {...register("slot")}>
-                    <option value="" disabled>
-                      Pick a slot
-                    </option>
+                    <option value="" disabled>Pick a slot</option>
                     {SLOTS.map((s) => (
-                      <option key={s}>{s}</option>
+                      <option key={s.value} value={s.value}>{s.label}</option>
                     ))}
                   </select>
                 </Field>
@@ -209,12 +273,8 @@ function BookPage() {
 
               <Field label="Hair concern" error={errors.concern?.message}>
                 <select className={fieldCls} defaultValue="" {...register("concern")}>
-                  <option value="" disabled>
-                    What brings you here?
-                  </option>
-                  {CONCERNS.map((c) => (
-                    <option key={c}>{c}</option>
-                  ))}
+                  <option value="" disabled>What brings you here?</option>
+                  {CONCERNS.map((c) => <option key={c}>{c}</option>)}
                 </select>
               </Field>
 
@@ -232,7 +292,7 @@ function BookPage() {
                 disabled={isSubmitting}
                 className="btn-lift mt-2 flex w-full cursor-pointer items-center justify-center gap-2 rounded-full bg-brass py-4 text-sm font-semibold text-ink hover:bg-brass-soft disabled:opacity-60"
               >
-                Continue to verify <ArrowRight className="h-4 w-4" />
+                {isSubmitting ? "Sending OTP…" : <>Continue to verify <ArrowRight className="h-4 w-4" /></>}
               </button>
             </form>
 

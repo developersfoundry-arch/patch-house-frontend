@@ -1,10 +1,14 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { getAuthUser, setAuthUser } from "@/lib/auth";
-import { BRAND } from "@/data/content";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
+import { api } from "@/lib/api";
+import { setAuthUser } from "@/lib/auth";
+import { BRAND } from "@/data/content";
+import type { User } from "@/lib/types";
 
 export const Route = createFileRoute("/dashboard/profile")({
   component: ProfilePage,
@@ -32,33 +36,72 @@ const inputCls =
 const labelCls = "block text-sm font-medium text-muted-foreground";
 
 export default function ProfilePage() {
-  const user = getAuthUser();
+  const queryClient = useQueryClient();
+
+  const { data: user, isLoading } = useQuery({
+    queryKey: ["me"],
+    queryFn: () => api.get<User>("/me"),
+    staleTime: 5 * 60 * 1000,
+  });
 
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors, isDirty },
   } = useForm<FormValues>({
     resolver: zodResolver(schema),
-    defaultValues: {
-      name: user?.name ?? "",
-      email: "",
-      address: "",
-      city: "",
-      concern: "",
-    },
+    defaultValues: { name: "", email: "", address: "", city: "", concern: "" },
   });
 
-  const onSubmit = (data: FormValues) => {
-    if (user) setAuthUser({ ...user, name: data.name });
-    toast.success("Profile updated");
-  };
+  useEffect(() => {
+    if (user) {
+      reset({
+        name: user.name ?? "",
+        email: user.email ?? "",
+        address: user.address ?? "",
+        city: user.city ?? "",
+        concern: user.concern ?? "",
+      });
+    }
+  }, [user, reset]);
+
+  const saveMutation = useMutation({
+    mutationFn: (data: FormValues) => api.put<User>("/me", data),
+    onSuccess: (updated) => {
+      queryClient.setQueryData(["me"], updated);
+      setAuthUser({ id: updated.id, phone: updated.phone, name: updated.name });
+      reset({
+        name: updated.name ?? "",
+        email: updated.email ?? "",
+        address: updated.address ?? "",
+        city: updated.city ?? "",
+        concern: updated.concern ?? "",
+      });
+      toast.success("Profile updated");
+    },
+    onError: (e: Error) => toast.error(e.message),
+  });
+
+  if (isLoading) {
+    return (
+      <div className="max-w-lg space-y-4">
+        <div className="h-8 w-32 animate-pulse rounded-lg bg-muted" />
+        {[1, 2, 3, 4].map((i) => (
+          <div key={i} className="h-14 animate-pulse rounded-xl bg-muted" />
+        ))}
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-8">
       <h1 className="font-display text-2xl font-semibold text-foreground sm:text-3xl">Profile</h1>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="max-w-lg space-y-5">
+      <form
+        onSubmit={handleSubmit((d) => saveMutation.mutate(d))}
+        className="max-w-lg space-y-5"
+      >
         {/* Full name */}
         <div>
           <label className={labelCls}>Full name</label>
@@ -110,7 +153,7 @@ export default function ProfilePage() {
         {/* City */}
         <div>
           <label className={labelCls}>City</label>
-          <select className={inputCls} defaultValue="" {...register("city")}>
+          <select className={inputCls} {...register("city")}>
             <option value="">Select city</option>
             {BRAND.cities.map((c) => (
               <option key={c}>{c}</option>
@@ -121,7 +164,7 @@ export default function ProfilePage() {
         {/* Hair concern */}
         <div>
           <label className={labelCls}>Hair concern</label>
-          <select className={inputCls} defaultValue="" {...register("concern")}>
+          <select className={inputCls} {...register("concern")}>
             <option value="">Select concern</option>
             {CONCERNS.map((c) => (
               <option key={c}>{c}</option>
@@ -131,10 +174,10 @@ export default function ProfilePage() {
 
         <button
           type="submit"
-          disabled={!isDirty}
+          disabled={!isDirty || saveMutation.isPending}
           className="btn-lift cursor-pointer rounded-full bg-brass px-6 py-3 text-sm font-semibold text-ink transition hover:bg-brass-soft disabled:opacity-50"
         >
-          Save changes
+          {saveMutation.isPending ? "Saving…" : "Save changes"}
         </button>
       </form>
     </div>
