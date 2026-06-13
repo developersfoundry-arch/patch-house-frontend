@@ -7,7 +7,7 @@ import { ArrowRight } from "lucide-react";
 import { signInWithPhoneNumber, RecaptchaVerifier, type ConfirmationResult } from "firebase/auth";
 import { BRAND } from "@/data/content";
 import { setAuthUser } from "@/lib/auth";
-import { auth } from "@/lib/firebase";
+import { getFirebaseAuth } from "@/lib/firebase";
 import { api } from "@/lib/api";
 import { toast } from "sonner";
 import type { User, Appointment } from "@/lib/types";
@@ -76,7 +76,7 @@ function BookPage() {
   } = useForm<FormValues>({ resolver: zodResolver(schema) });
 
   useEffect(() => {
-    verifierRef.current = new RecaptchaVerifier(auth, "recaptcha-container", {
+    verifierRef.current = new RecaptchaVerifier(getFirebaseAuth(), "recaptcha-container", {
       size: "invisible",
     });
     return () => {
@@ -89,11 +89,11 @@ function BookPage() {
     setBookingData(data);
     try {
       if (!verifierRef.current) {
-        verifierRef.current = new RecaptchaVerifier(auth, "recaptcha-container", {
+        verifierRef.current = new RecaptchaVerifier(getFirebaseAuth(), "recaptcha-container", {
           size: "invisible",
         });
       }
-      await signInWithPhoneNumber(auth, `+91${data.phone}`, verifierRef.current).then(
+      await signInWithPhoneNumber(getFirebaseAuth(), `+91${data.phone}`, verifierRef.current).then(
         (conf) => { confirmationRef.current = conf; }
       );
       setStep("otp");
@@ -101,7 +101,7 @@ function BookPage() {
     } catch {
       toast.error("Failed to send OTP. Please try again.");
       verifierRef.current?.clear();
-      verifierRef.current = new RecaptchaVerifier(auth, "recaptcha-container", {
+      verifierRef.current = new RecaptchaVerifier(getFirebaseAuth(), "recaptcha-container", {
         size: "invisible",
       });
     }
