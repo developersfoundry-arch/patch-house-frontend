@@ -7,11 +7,10 @@ import {
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
-import { useEffect, type ReactNode } from "react";
+import { type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
-import { useThemeMode } from "@/components/theme-switcher";
 
 function NotFoundComponent() {
   return (
@@ -113,13 +112,7 @@ function RootShell({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
       <head>
-        {/* Apply theme before first paint — prevents flash.
-            Priority: 1) saved pref  2) OS prefers-color-scheme  3) default light */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `try{var _m=localStorage.getItem("sah-mode");if(_m==="light"){document.documentElement.setAttribute("data-mode","light")}else if(!_m&&!window.matchMedia("(prefers-color-scheme: dark)").matches){document.documentElement.setAttribute("data-mode","light")}}catch(e){document.documentElement.setAttribute("data-mode","light")}`,
-          }}
-        />
+        <script dangerouslySetInnerHTML={{ __html: `document.documentElement.setAttribute("data-mode","light");` }} />
         <HeadContent />
       </head>
       <body>
@@ -132,9 +125,6 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
-  // Initialize mode from localStorage on every page
-  useThemeMode();
-
   return (
     <QueryClientProvider client={queryClient}>
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}

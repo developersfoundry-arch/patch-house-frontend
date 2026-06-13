@@ -2,7 +2,6 @@ import { Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
 import { BRAND } from "@/data/content";
-import { ThemeSwitcher } from "@/components/theme-switcher";
 
 const links = [
   { href: "#how", label: "How it works" },
@@ -60,11 +59,9 @@ export function Navbar() {
           >
             Book Home Visit
           </Link>
-          <ThemeSwitcher />
         </div>
 
         <div className="flex items-center gap-2 md:hidden">
-          <ThemeSwitcher />
           <button aria-label="Open menu" className="text-cream" onClick={() => setOpen((o) => !o)}>
             {open ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
           </button>

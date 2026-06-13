@@ -4,7 +4,6 @@ import { Home, Sparkles, User, LogOut, Menu, X, MessageCircle } from "lucide-rea
 import { isAuthenticated, getAuthUser, clearAuthUser } from "@/lib/auth";
 import { BRAND, waLink } from "@/data/content";
 import { cn } from "@/lib/utils";
-import { ThemeSwitcher } from "@/components/theme-switcher";
 
 const NAV_ITEMS = [
   { to: "/dashboard", label: "Home", icon: Home, exact: true },
@@ -56,7 +55,6 @@ function DashboardLayout() {
             <span className="text-brass">House</span>
           </Link>
           <div className="flex items-center gap-1">
-            <ThemeSwitcher className="h-8 w-8 border-white/10 text-cream/60 hover:border-brass hover:text-brass" />
             <button
               onClick={() => setSidebarOpen(false)}
               aria-label="Close menu"
