@@ -13,13 +13,15 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
     throw new Error("Unauthorized");
   }
 
-  const data = await res.json().catch(() => ({}));
+  const json = await res.json().catch(() => ({}));
 
   if (!res.ok) {
-    throw new Error((data as { error?: string }).error ?? `Request failed (${res.status})`);
+    throw new Error((json as { error?: string }).error ?? `Request failed (${res.status})`);
   }
 
-  return data as T;
+  // Backend wraps all success responses: { success: true, data: <payload> }
+  const payload = (json as { data?: unknown }).data;
+  return (payload !== undefined ? payload : json) as T;
 }
 
 export const api = {
