@@ -113,10 +113,11 @@ function RootShell({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
       <head>
-        {/* Apply saved theme before first paint to avoid a dark-mode flash */}
+        {/* Apply theme before first paint — prevents flash.
+            Priority: 1) saved pref  2) OS prefers-color-scheme  3) default light */}
         <script
           dangerouslySetInnerHTML={{
-            __html: `try{if(localStorage.getItem("sah-mode")==="light")document.documentElement.setAttribute("data-mode","light")}catch(e){}`,
+            __html: `try{var _m=localStorage.getItem("sah-mode");if(_m==="light"){document.documentElement.setAttribute("data-mode","light")}else if(!_m&&!window.matchMedia("(prefers-color-scheme: dark)").matches){document.documentElement.setAttribute("data-mode","light")}}catch(e){document.documentElement.setAttribute("data-mode","light")}`,
           }}
         />
         <HeadContent />
