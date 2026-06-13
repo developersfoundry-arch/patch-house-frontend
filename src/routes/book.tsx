@@ -1,10 +1,11 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { ArrowRight, Check, MessageCircle } from "lucide-react";
-import { BRAND, waLink } from "@/data/content";
+import { ArrowRight } from "lucide-react";
+import { BRAND } from "@/data/content";
+import { setAuthUser, DEMO_OTP } from "@/lib/auth";
 
 export const Route = createFileRoute("/book")({
   head: () => ({
@@ -45,7 +46,11 @@ const fieldCls =
 const labelCls = "text-xs font-medium uppercase tracking-widest text-slate-muted";
 
 function BookPage() {
-  const [done, setDone] = useState<FormValues | null>(null);
+  const navigate = useNavigate();
+  const [step, setStep] = useState<"form" | "otp">("form");
+  const [bookingData, setBookingData] = useState<FormValues | null>(null);
+  const [otp, setOtp] = useState("");
+  const [otpErr, setOtpErr] = useState<string | null>(null);
   const today = new Date().toISOString().split("T")[0];
 
   const {
@@ -55,9 +60,24 @@ function BookPage() {
   } = useForm<FormValues>({ resolver: zodResolver(schema) });
 
   const onSubmit = (data: FormValues) => {
-    console.log("Booking submitted:", data);
-    setDone(data);
+    setBookingData(data);
+    setStep("otp");
     window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  const submitOtp = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!/^\d{6}$/.test(otp)) {
+      setOtpErr("Enter the 6-digit OTP");
+      return;
+    }
+    if (otp !== DEMO_OTP) {
+      setOtpErr("Incorrect OTP. Please try again.");
+      return;
+    }
+    setOtpErr(null);
+    setAuthUser({ phone: bookingData!.phone, name: bookingData!.name });
+    navigate({ to: "/dashboard" });
   };
 
   return (
@@ -71,8 +91,51 @@ function BookPage() {
           <span className="text-brass">AtHome</span>
         </Link>
 
-        {done ? (
-          <Success data={done} />
+        {step === "otp" && bookingData ? (
+          <div className="rounded-3xl border border-white/10 bg-white/[0.03] p-8 backdrop-blur sm:p-10">
+            <div className="text-center">
+              <p className="text-xs font-medium uppercase tracking-[0.25em] text-brass">
+                One last step
+              </p>
+              <h1 className="mt-3 font-display text-3xl font-semibold text-cream">
+                Verify your number
+              </h1>
+              <p className="mt-3 text-sm text-cream/70">OTP sent to +91 {bookingData.phone}</p>
+            </div>
+            <form onSubmit={submitOtp} className="mt-8 space-y-5">
+              <div>
+                <label className="text-xs font-medium uppercase tracking-widest text-cream/60">
+                  Enter 6-digit OTP
+                </label>
+                <input
+                  inputMode="numeric"
+                  maxLength={6}
+                  value={otp}
+                  onChange={(e) => setOtp(e.target.value.replace(/\D/g, ""))}
+                  placeholder="••••••"
+                  className="mt-2 w-full rounded-xl border border-white/15 bg-ink/40 px-4 py-3 text-center text-2xl tracking-[0.5em] text-cream outline-none placeholder:text-cream/20 focus:border-brass"
+                />
+                {otpErr && <p className="mt-2 text-xs text-red-400">{otpErr}</p>}
+              </div>
+              <button
+                type="submit"
+                className="btn-lift flex w-full cursor-pointer items-center justify-center gap-2 rounded-full bg-brass py-3.5 text-sm font-semibold text-ink hover:bg-brass-soft"
+              >
+                Confirm my visit <ArrowRight className="h-4 w-4" />
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setStep("form");
+                  setOtp("");
+                  setOtpErr(null);
+                }}
+                className="block w-full cursor-pointer text-center text-xs text-cream/60 hover:text-brass"
+              >
+                ← Edit booking details
+              </button>
+            </form>
+          </div>
         ) : (
           <>
             <div className="text-center">
@@ -167,9 +230,9 @@ function BookPage() {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="btn-lift mt-2 flex w-full items-center justify-center gap-2 rounded-full bg-ink py-4 text-sm font-semibold text-cream hover:bg-ink-soft disabled:opacity-60"
+                className="btn-lift mt-2 flex w-full cursor-pointer items-center justify-center gap-2 rounded-full bg-ink py-4 text-sm font-semibold text-cream hover:bg-ink-soft disabled:opacity-60"
               >
-                Confirm my free visit <ArrowRight className="h-4 w-4" />
+                Continue to verify <ArrowRight className="h-4 w-4" />
               </button>
             </form>
 
@@ -197,56 +260,6 @@ function Field({
       <label className={labelCls}>{label}</label>
       {children}
       {error && <p className="mt-1.5 text-xs text-red-600">{error}</p>}
-    </div>
-  );
-}
-
-function Success({ data }: { data: FormValues }) {
-  return (
-    <div className="rounded-3xl border border-brass/30 bg-white/[0.03] p-8 text-center backdrop-blur sm:p-12">
-      <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-brass text-ink shadow-lg animate-[reveal-up_0.6s_ease-out_forwards]">
-        <Check className="h-8 w-8" strokeWidth={2.5} />
-      </div>
-      <h1 className="mt-6 font-display text-3xl font-semibold text-cream sm:text-4xl">
-        You're booked!
-      </h1>
-      <p className="mt-3 text-cream/70">
-        Hi {data.name.split(" ")[0]}, our expert will reach out to confirm.
-      </p>
-
-      <dl className="mx-auto mt-8 grid max-w-sm gap-3 rounded-2xl border border-white/10 bg-ink/40 p-5 text-left text-sm">
-        <Row k="When" v={`${data.date} · ${data.slot}`} />
-        <Row k="Where" v={`${data.address}, ${data.city}`} />
-        <Row k="Phone" v={`+91 ${data.phone}`} />
-        <Row k="Concern" v={data.concern} />
-      </dl>
-
-      <a
-        href={waLink(
-          `Hi! I just booked a home visit for ${data.date} (${data.slot}) in ${data.city}. Please share confirmation.`,
-        )}
-        target="_blank"
-        rel="noreferrer"
-        className="mt-8 inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-semibold text-white transition hover:opacity-90"
-        style={{ backgroundColor: "#25D366" }}
-      >
-        <MessageCircle className="h-4 w-4" /> Get confirmation on WhatsApp
-      </a>
-
-      <div className="mt-5">
-        <Link to="/" className="text-xs text-cream/50 hover:text-brass">
-          ← Back to home
-        </Link>
-      </div>
-    </div>
-  );
-}
-
-function Row({ k, v }: { k: string; v: string }) {
-  return (
-    <div className="flex justify-between gap-4 border-b border-white/5 pb-2 last:border-0 last:pb-0">
-      <dt className="text-cream/50">{k}</dt>
-      <dd className="text-right text-cream">{v}</dd>
     </div>
   );
 }

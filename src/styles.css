@@ -250,6 +250,35 @@
   }
 }
 
+/* Dashboard content area: dark by default (matches global dark), cream in light mode.
+   Sidebar stays bg-ink always — only the scrollable content area changes. */
+.dashboard-area {
+  --background: oklch(0.25 0.04 250);
+  --foreground: var(--cream);
+  --card: var(--ink-soft);
+  --card-foreground: var(--cream);
+  --muted: var(--ink-soft);
+  --muted-foreground: oklch(0.78 0.025 250);
+  --slate-muted: oklch(0.75 0.025 250);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 12%);
+  background-color: var(--background);
+  color: var(--foreground);
+}
+:root[data-mode="light"] .dashboard-area {
+  --background: var(--cream);
+  --foreground: var(--ink);
+  --card: oklch(1 0 0);
+  --card-foreground: var(--ink);
+  --muted: var(--cream-soft);
+  --muted-foreground: var(--slate-muted);
+  --slate-muted: oklch(0.55 0.025 250);
+  --border: oklch(0.88 0.012 90);
+  --input: oklch(0.9 0.012 90);
+  background-color: var(--background);
+  color: var(--foreground);
+}
+
 .brass-rule {
   height: 1px;
   background: linear-gradient(90deg, transparent, var(--brass) 30%, var(--brass) 70%, transparent);

@@ -2,6 +2,7 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { ArrowRight } from "lucide-react";
 import { BRAND } from "@/data/content";
+import { setAuthUser, isAuthenticated, DEMO_PHONE, DEMO_OTP } from "@/lib/auth";
 
 export const Route = createFileRoute("/login")({
   head: () => ({
@@ -20,6 +21,11 @@ function LoginPage() {
   const [otp, setOtp] = useState("");
   const [err, setErr] = useState<string | null>(null);
 
+  if (isAuthenticated()) {
+    navigate({ to: "/dashboard", replace: true });
+    return null;
+  }
+
   const submitPhone = (e: React.FormEvent) => {
     e.preventDefault();
     if (!/^\d{10}$/.test(phone)) {
@@ -36,8 +42,13 @@ function LoginPage() {
       setErr("Enter the 6-digit OTP");
       return;
     }
+    if (phone !== DEMO_PHONE || otp !== DEMO_OTP) {
+      setErr("Incorrect OTP. Please try again.");
+      return;
+    }
     setErr(null);
-    navigate({ to: "/book" });
+    setAuthUser({ phone, name: "Rahul" });
+    navigate({ to: "/dashboard" });
   };
 
   return (
@@ -78,23 +89,9 @@ function LoginPage() {
               </div>
               <button
                 type="submit"
-                className="btn-lift flex w-full items-center justify-center gap-2 rounded-full bg-brass py-3.5 text-sm font-semibold text-ink hover:bg-brass-soft"
+                className="btn-lift flex w-full cursor-pointer items-center justify-center gap-2 rounded-full bg-brass py-3.5 text-sm font-semibold text-ink hover:bg-brass-soft"
               >
                 Send OTP <ArrowRight className="h-4 w-4" />
-              </button>
-
-              <div className="flex items-center gap-3 py-2">
-                <div className="h-px flex-1 bg-white/10" />
-                <span className="text-xs text-cream/50">OR</span>
-                <div className="h-px flex-1 bg-white/10" />
-              </div>
-
-              <button
-                type="button"
-                className="btn-lift flex w-full items-center justify-center gap-3 rounded-full border border-white/20 bg-white py-3 text-sm font-medium text-ink hover:bg-cream"
-              >
-                <GoogleIcon />
-                Continue with Google
               </button>
             </form>
           ) : (
@@ -115,7 +112,7 @@ function LoginPage() {
               </div>
               <button
                 type="submit"
-                className="btn-lift flex w-full items-center justify-center gap-2 rounded-full bg-brass py-3.5 text-sm font-semibold text-ink hover:bg-brass-soft"
+                className="btn-lift flex w-full cursor-pointer items-center justify-center gap-2 rounded-full bg-brass py-3.5 text-sm font-semibold text-ink hover:bg-brass-soft"
               >
                 Verify &amp; continue <ArrowRight className="h-4 w-4" />
               </button>
@@ -126,7 +123,7 @@ function LoginPage() {
                   setOtp("");
                   setErr(null);
                 }}
-                className="block w-full text-center text-xs text-cream/60 hover:text-brass"
+                className="block w-full cursor-pointer text-center text-xs text-cream/60 hover:text-brass"
               >
                 Use a different number
               </button>
@@ -139,28 +136,5 @@ function LoginPage() {
         </p>
       </div>
     </div>
-  );
-}
-
-function GoogleIcon() {
-  return (
-    <svg viewBox="0 0 24 24" className="h-4 w-4">
-      <path
-        fill="#4285F4"
-        d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.76h3.56c2.08-1.92 3.28-4.74 3.28-8.09z"
-      />
-      <path
-        fill="#34A853"
-        d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.56-2.76c-.99.66-2.25 1.06-3.72 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84A11 11 0 0 0 12 23z"
-      />
-      <path
-        fill="#FBBC05"
-        d="M5.84 14.11A6.6 6.6 0 0 1 5.48 12c0-.73.13-1.44.36-2.11V7.05H2.18A11 11 0 0 0 1 12c0 1.77.42 3.45 1.18 4.95l3.66-2.84z"
-      />
-      <path
-        fill="#EA4335"
-        d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.05l3.66 2.84C6.71 7.31 9.14 5.38 12 5.38z"
-      />
-    </svg>
   );
 }
