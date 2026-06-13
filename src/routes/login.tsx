@@ -5,7 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import { signInWithPhoneNumber, RecaptchaVerifier, type ConfirmationResult } from "firebase/auth";
 import { BRAND } from "@/data/content";
 import { setAuthUser, isAuthenticated } from "@/lib/auth";
-import { auth } from "@/lib/firebase";
+import { getFirebaseAuth } from "@/lib/firebase";
 import { api } from "@/lib/api";
 import type { User } from "@/lib/types";
 
@@ -43,7 +43,7 @@ function LoginPage() {
   }, [existingUser, navigate]);
 
   useEffect(() => {
-    verifierRef.current = new RecaptchaVerifier(auth, "recaptcha-container", {
+    verifierRef.current = new RecaptchaVerifier(getFirebaseAuth(), "recaptcha-container", {
       size: "invisible",
     });
     return () => {
@@ -62,17 +62,17 @@ function LoginPage() {
     setLoading(true);
     try {
       if (!verifierRef.current) {
-        verifierRef.current = new RecaptchaVerifier(auth, "recaptcha-container", {
+        verifierRef.current = new RecaptchaVerifier(getFirebaseAuth(), "recaptcha-container", {
           size: "invisible",
         });
       }
-      const confirmation = await signInWithPhoneNumber(auth, `+91${phone}`, verifierRef.current);
+      const confirmation = await signInWithPhoneNumber(getFirebaseAuth(), `+91${phone}`, verifierRef.current);
       confirmationRef.current = confirmation;
       setStep("otp");
     } catch {
       setErr("Failed to send OTP. Please check the number and try again.");
       verifierRef.current?.clear();
-      verifierRef.current = new RecaptchaVerifier(auth, "recaptcha-container", {
+      verifierRef.current = new RecaptchaVerifier(getFirebaseAuth(), "recaptcha-container", {
         size: "invisible",
       });
     } finally {
