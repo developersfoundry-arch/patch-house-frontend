@@ -81,7 +81,7 @@ const JSON_LD = JSON.stringify([
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "StrandsAtHome — At-Home Hair Patch Service in Delhi NCR" },
+      { title: "PatchHouse — At-Home Hair Patch Service in Delhi NCR" },
       {
         name: "description",
         content:
@@ -353,7 +353,7 @@ function Compare() {
           </div>
           <div className="card-glass-brass lift rounded-2xl border border-brass/40 p-8 hover:border-brass">
             <h3 className="text-sm font-medium uppercase tracking-widest text-brass">
-              StrandsAtHome
+              PatchHouse
             </h3>
             <ul className="mt-6 space-y-4">
               {COMPARISON.us.map((c) => (

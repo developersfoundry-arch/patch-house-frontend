@@ -7,7 +7,7 @@ import { setAuthUser, isAuthenticated, DEMO_PHONE, DEMO_OTP } from "@/lib/auth";
 export const Route = createFileRoute("/login")({
   head: () => ({
     meta: [
-      { title: "Login — StrandsAtHome" },
+      { title: "Login — PatchHouse" },
       { name: "description", content: "Log in to manage your at-home hair patch booking." },
     ],
   }),
@@ -58,8 +58,8 @@ function LoginPage() {
           to="/"
           className="mb-10 block text-center font-display text-2xl font-semibold text-cream"
         >
-          {BRAND.name.replace("AtHome", "")}
-          <span className="text-brass">AtHome</span>
+          {BRAND.name.replace("House", "")}
+          <span className="text-brass">House</span>
         </Link>
 
         <div className="rounded-3xl border border-white/10 bg-white/[0.03] p-8 backdrop-blur">

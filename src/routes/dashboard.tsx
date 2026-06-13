@@ -67,8 +67,8 @@ function DashboardLayout() {
         {/* Sidebar header */}
         <div className="flex h-16 items-center justify-between border-b border-white/10 px-5">
           <Link to="/" className="font-display text-lg font-semibold text-cream">
-            {BRAND.name.replace("AtHome", "")}
-            <span className="text-brass">AtHome</span>
+            {BRAND.name.replace("House", "")}
+            <span className="text-brass">House</span>
           </Link>
           <div className="flex items-center gap-1">
             <ThemeSwitcher className="h-8 w-8 border-white/10 text-cream/70 hover:border-brass hover:text-brass" />
@@ -120,8 +120,8 @@ function DashboardLayout() {
             <Menu className="h-5 w-5" />
           </button>
           <Link to="/" className="font-display text-lg font-semibold text-foreground">
-            {BRAND.name.replace("AtHome", "")}
-            <span className="text-brass">AtHome</span>
+            {BRAND.name.replace("House", "")}
+            <span className="text-brass">House</span>
           </Link>
         </header>
 

@@ -78,13 +78,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "StrandsAtHome — At-Home Hair Patch Service in Delhi NCR" },
+      { title: "PatchHouse — At-Home Hair Patch Service in Delhi NCR" },
       {
         name: "description",
         content:
           "Discreet at-home hair patch fittings across Delhi NCR. A certified hair expert visits you privately. Same-day, no clinic, completely confidential.",
       },
-      { property: "og:title", content: "StrandsAtHome — At-Home Hair Patch Service" },
+      { property: "og:title", content: "PatchHouse — At-Home Hair Patch Service" },
       {
         property: "og:description",
         content:

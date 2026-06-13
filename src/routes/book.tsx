@@ -10,7 +10,7 @@ import { setAuthUser, DEMO_OTP } from "@/lib/auth";
 export const Route = createFileRoute("/book")({
   head: () => ({
     meta: [
-      { title: "Book your free home consultation — StrandsAtHome" },
+      { title: "Book your free home consultation — PatchHouse" },
       {
         name: "description",
         content: "Book a free, private at-home hair patch consultation in Delhi NCR.",
@@ -87,8 +87,8 @@ function BookPage() {
           to="/"
           className="mb-8 block text-center font-display text-xl font-semibold text-cream"
         >
-          {BRAND.name.replace("AtHome", "")}
-          <span className="text-brass">AtHome</span>
+          {BRAND.name.replace("House", "")}
+          <span className="text-brass">House</span>
         </Link>
 
         {step === "otp" && bookingData ? (
@@ -152,7 +152,7 @@ function BookPage() {
 
             <form
               onSubmit={handleSubmit(onSubmit)}
-              className="mt-8 space-y-5 rounded-3xl bg-cream p-6 shadow-2xl sm:p-8"
+              className="mt-8 space-y-5 rounded-3xl bg-white p-6 shadow-2xl sm:p-8"
             >
               <Field label="Full name" error={errors.name?.message}>
                 <input className={fieldCls} placeholder="Your name" {...register("name")} />
@@ -230,7 +230,7 @@ function BookPage() {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="btn-lift mt-2 flex w-full cursor-pointer items-center justify-center gap-2 rounded-full bg-ink py-4 text-sm font-semibold text-cream hover:bg-ink-soft disabled:opacity-60"
+                className="btn-lift mt-2 flex w-full cursor-pointer items-center justify-center gap-2 rounded-full bg-brass py-4 text-sm font-semibold text-ink hover:bg-brass-soft disabled:opacity-60"
               >
                 Continue to verify <ArrowRight className="h-4 w-4" />
               </button>

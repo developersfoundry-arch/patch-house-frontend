@@ -4,10 +4,10 @@ import { BRAND } from "@/data/content";
 export const Route = createFileRoute("/terms")({
   head: () => ({
     meta: [
-      { title: "Terms of Service — StrandsAtHome" },
+      { title: "Terms of Service — PatchHouse" },
       {
         name: "description",
-        content: "The terms that apply to StrandsAtHome consultations, fittings, and aftercare.",
+        content: "The terms that apply to PatchHouse consultations, fittings, and aftercare.",
       },
     ],
   }),
@@ -45,14 +45,14 @@ function TermsPage() {
           to="/"
           className="font-display text-2xl font-semibold text-foreground transition hover:text-brass"
         >
-          {BRAND.name.replace("AtHome", "")}
-          <span className="text-brass">AtHome</span>
+          {BRAND.name.replace("House", "")}
+          <span className="text-brass">House</span>
         </Link>
         <h1 className="mt-10 font-display text-4xl font-semibold text-foreground">
           Terms of Service
         </h1>
         <p className="mt-3 text-sm text-muted-foreground">
-          Plain language, no fine print. These terms apply to every StrandsAtHome visit.
+          Plain language, no fine print. These terms apply to every PatchHouse visit.
         </p>
         <div className="mt-10 space-y-8">
           {SECTIONS.map((s) => (
