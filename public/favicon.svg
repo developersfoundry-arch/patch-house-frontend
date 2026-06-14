@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <!-- ink: oklch(0.22 0.045 250) ≈ #18213a  |  brass: oklch(0.76 0.1 75) ≈ #c9a752 -->
+  <rect width="32" height="32" rx="7" fill="#18213a"/>
+  <text
+    x="16" y="24"
+    text-anchor="middle"
+    font-family="Georgia, 'Times New Roman', serif"
+    font-size="22"
+    font-weight="700"
+    fill="#c9a752"
+  >S</text>
+</svg>
