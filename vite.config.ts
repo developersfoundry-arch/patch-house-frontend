@@ -14,5 +14,12 @@ export default defineConfig({
   },
   nitro: {
     preset: "vercel",
+    routeRules: {
+      "/**": {
+        headers: {
+          "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+        },
+      },
+    },
   },
 });
