@@ -1,9 +1,8 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
-import { signInWithPopup } from "firebase/auth";
 import { BRAND } from "@/data/content";
 import { setAuthUser, isAuthenticated } from "@/lib/auth";
-import { getFirebaseAuth, getGoogleProvider } from "@/lib/firebase";
+import { signInWithGoogle } from "@/lib/firebase";
 import { api } from "@/lib/api";
 import { useQuery } from "@tanstack/react-query";
 import type { User } from "@/lib/types";
@@ -38,7 +37,7 @@ function LoginPage() {
     setErr(null);
     setLoading(true);
     try {
-      const result = await signInWithPopup(getFirebaseAuth(), getGoogleProvider());
+      const result = await signInWithGoogle();
       const idToken = await result.user.getIdToken();
       const user = await api.post<User>("/auth/firebase", { id_token: idToken });
       setAuthUser({ id: user.id, phone: user.phone ?? "", name: user.name });

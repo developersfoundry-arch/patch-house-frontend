@@ -4,10 +4,9 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { ArrowRight } from "lucide-react";
-import { signInWithPopup } from "firebase/auth";
 import { BRAND } from "@/data/content";
 import { setAuthUser, isAuthenticated } from "@/lib/auth";
-import { getFirebaseAuth, getGoogleProvider } from "@/lib/firebase";
+import { signInWithGoogle } from "@/lib/firebase";
 import { api } from "@/lib/api";
 import { toast } from "sonner";
 import type { User, Appointment } from "@/lib/types";
@@ -74,7 +73,7 @@ function BookPage() {
     try {
       // 1. Authenticate with Google if no active session
       if (!isAuthenticated()) {
-        const result = await signInWithPopup(getFirebaseAuth(), getGoogleProvider());
+        const result = await signInWithGoogle();
         const idToken = await result.user.getIdToken();
         const user = await api.post<User>("/auth/firebase", { id_token: idToken });
         setAuthUser({ id: user.id, phone: data.phone, name: data.name });
