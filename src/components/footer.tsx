@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
-import { BRAND, waLink } from "@/data/content";
+import { BRAND } from "@/data/content";
 import { Phone, MessageCircle } from "lucide-react";
+import { WhatsAppButton } from "@/components/whatsapp-intent";
 
 export function Footer() {
   return (
@@ -77,14 +78,9 @@ export function Footer() {
             >
               <Phone className="h-4 w-4" /> +91 84373 42545
             </a>
-            <a
-              href={waLink()}
-              target="_blank"
-              rel="noreferrer"
-              className="flex items-center gap-2 hover:text-brass"
-            >
+            <WhatsAppButton className="flex cursor-pointer items-center gap-2 hover:text-brass">
               <MessageCircle className="h-4 w-4" /> WhatsApp us
-            </a>
+            </WhatsAppButton>
           </div>
         </div>
       </div>

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { MessageCircle } from "lucide-react";
-import { waLink } from "@/data/content";
+import { WhatsAppButton } from "@/components/whatsapp-intent";
 
 export function WhatsAppFab() {
   const [show, setShow] = useState(false);
@@ -12,12 +12,9 @@ export function WhatsAppFab() {
   }, []);
   if (!show) return null;
   return (
-    <a
-      href={waLink()}
-      target="_blank"
-      rel="noopener noreferrer"
+    <WhatsAppButton
       aria-label="Chat with us on WhatsApp"
-      className="fixed bottom-5 right-5 z-50 flex h-14 w-14 items-center justify-center rounded-full text-white shadow-2xl transition-transform duration-300 hover:-translate-y-1 hover:scale-110 active:scale-95"
+      className="fixed bottom-5 right-5 z-50 flex h-14 w-14 cursor-pointer items-center justify-center rounded-full text-white shadow-2xl transition-transform duration-300 hover:-translate-y-1 hover:scale-110 active:scale-95"
       style={{ backgroundColor: "#25D366" }}
     >
       <span
@@ -25,6 +22,6 @@ export function WhatsAppFab() {
         style={{ backgroundColor: "#25D366" }}
       />
       <MessageCircle className="relative h-7 w-7" />
-    </a>
+    </WhatsAppButton>
   );
 }

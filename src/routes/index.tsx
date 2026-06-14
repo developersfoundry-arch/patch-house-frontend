@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
 import { WhatsAppFab } from "@/components/whatsapp-fab";
+import { WhatsAppButton } from "@/components/whatsapp-intent";
 import { BeforeAfter } from "@/components/before-after";
 import { useReveal } from "@/hooks/use-reveal";
 import {
@@ -17,7 +18,6 @@ import {
   STEPS,
   TESTIMONIALS,
   TRUST,
-  waLink,
 } from "@/data/content";
 import heroImg from "@/assets/hero-portrait.jpg";
 import {
@@ -157,14 +157,9 @@ function Hero() {
             >
               Book a Free Home Consultation <ArrowRight className="h-4 w-4" />
             </Link>
-            <a
-              href={waLink()}
-              target="_blank"
-              rel="noreferrer"
-              className="btn-lift inline-flex items-center justify-center gap-2 rounded-full border border-cream/30 px-7 py-3.5 text-sm font-medium text-cream hover:border-brass hover:text-brass"
-            >
+            <WhatsAppButton className="btn-lift inline-flex cursor-pointer items-center justify-center gap-2 rounded-full border border-cream/30 px-7 py-3.5 text-sm font-medium text-cream hover:border-brass hover:text-brass">
               <MessageCircle className="h-4 w-4" /> Chat on WhatsApp
-            </a>
+            </WhatsAppButton>
           </div>
           <div
             className="mt-10 flex flex-wrap gap-x-6 gap-y-2 text-xs text-cream/55 animate-[reveal-up_0.8s_ease-out_forwards] opacity-0"
@@ -574,14 +569,9 @@ function FinalCta() {
           >
             Book a Free Home Consultation <ArrowRight className="h-4 w-4" />
           </Link>
-          <a
-            href={waLink()}
-            target="_blank"
-            rel="noreferrer"
-            className="btn-lift inline-flex items-center justify-center gap-2 rounded-full border border-ink/30 px-7 py-3.5 text-sm font-medium text-ink hover:border-brass hover:text-brass"
-          >
+          <WhatsAppButton className="btn-lift inline-flex cursor-pointer items-center justify-center gap-2 rounded-full border border-ink/30 px-7 py-3.5 text-sm font-medium text-ink hover:border-brass hover:text-brass">
             <MessageCircle className="h-4 w-4" /> WhatsApp us
-          </a>
+          </WhatsAppButton>
         </div>
       </div>
     </section>
