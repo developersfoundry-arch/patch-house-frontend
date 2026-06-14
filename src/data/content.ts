@@ -1,7 +1,8 @@
 // All editable site content lives here.
 
 export const BRAND = {
-  name: "PatchHouse",
+  name: "StrandsAtHome",
+  nameAccent: "Home", // the suffix shown in brass — "StrandsAt" + [Home]
   whatsappNumber: "918437342545",
   whatsappMessage:
     "Hi! I'm interested in a free at-home hair patch consultation. My name is ____ and I'm located in ____ (Delhi NCR). Please share the next available slot.",
@@ -135,7 +136,7 @@ export const EXPERTS = {
   kicker: "Who visits you",
   heading: "Who walks through your door.",
   intro:
-    "A small, handpicked team — not gig workers. Every PatchHouse expert is someone we would send to our own family.",
+    "A small, handpicked team — not gig workers. Every StrandsAtHome expert is someone we would send to our own family.",
   points: [
     {
       title: "ID-verified, every visit",

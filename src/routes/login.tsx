@@ -11,7 +11,7 @@ import type { User } from "@/lib/types";
 export const Route = createFileRoute("/login")({
   head: () => ({
     meta: [
-      { title: "Login — PatchHouse" },
+      { title: "Login — StrandsAtHome" },
       { name: "description", content: "Log in to manage your at-home hair patch booking." },
     ],
   }),
@@ -59,8 +59,8 @@ function LoginPage() {
           to="/"
           className="mb-10 block text-center font-display text-2xl font-semibold text-foreground"
         >
-          {BRAND.name.replace("House", "")}
-          <span className="text-brass">House</span>
+          {BRAND.name.replace(BRAND.nameAccent, "")}
+          <span className="text-brass">{BRAND.nameAccent}</span>
         </Link>
 
         <div className="card-glass rounded-3xl border border-foreground/10 p-8 backdrop-blur">

@@ -78,20 +78,36 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "PatchHouse — At-Home Hair Patch Service in Delhi NCR" },
+      { title: "StrandsAtHome — At-Home Hair Patch Service in Delhi NCR" },
       {
         name: "description",
         content:
-          "Discreet at-home hair patch fittings across Delhi NCR. A certified hair expert visits you privately. Same-day, no clinic, completely confidential.",
+          "StrandsAtHome — Non-surgical hair patch for men fitted privately at your home in Delhi, Noida, Gurugram, Ghaziabad, Faridabad & across NCR. Same-day fitting. No clinic. 100% confidential.",
       },
-      { property: "og:title", content: "PatchHouse — At-Home Hair Patch Service" },
+      {
+        name: "keywords",
+        content:
+          "hair patch Delhi NCR, at home hair patch, non-surgical hair replacement Delhi, hair system home fitting, hair patch for men Delhi, baldness solution at home, hair patch Noida, hair patch Gurugram, hair patch Ghaziabad, hair patch Faridabad, hair replacement Delhi NCR, hair patch consultation home visit, non surgical hair replacement India, toupee fitting at home Delhi, hair patch service India, StrandsAtHome",
+      },
+      { name: "geo.region", content: "IN-DL" },
+      { name: "geo.placename", content: "Delhi NCR, India" },
+      { name: "geo.position", content: "28.6139;77.2090" },
+      { name: "ICBM", content: "28.6139, 77.2090" },
+      { property: "og:title", content: "StrandsAtHome — At-Home Hair Patch Service in Delhi NCR" },
       {
         property: "og:description",
         content:
-          "A certified hair expert visits you privately. Same-day fitting. Completely confidential.",
+          "A certified hair expert visits your home privately. Non-surgical hair patch fitted same-day across Delhi NCR. No clinic, no awkwardness.",
       },
       { property: "og:type", content: "website" },
+      { property: "og:locale", content: "en_IN" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "StrandsAtHome — At-Home Hair Patch Service" },
+      {
+        name: "twitter:description",
+        content:
+          "Private at-home hair patch fittings across Delhi NCR. Same-day service. No clinic visit needed.",
+      },
     ],
     links: [
       { rel: "stylesheet", href: appCss },

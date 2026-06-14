@@ -15,10 +15,11 @@ import type { User, Appointment } from "@/lib/types";
 export const Route = createFileRoute("/book")({
   head: () => ({
     meta: [
-      { title: "Book your free home consultation — PatchHouse" },
+      { title: "Book Free Home Consultation — StrandsAtHome | Hair Patch Delhi NCR" },
       {
         name: "description",
-        content: "Book a free, private at-home hair patch consultation in Delhi NCR.",
+        content:
+          "Book a free, private at-home hair patch consultation across Delhi, Noida, Gurugram, Ghaziabad & Faridabad. A certified expert visits your home. No clinic visit needed.",
       },
     ],
   }),
@@ -115,8 +116,8 @@ function BookPage() {
           to="/"
           className="mb-8 block text-center font-display text-xl font-semibold text-cream"
         >
-          {BRAND.name.replace("House", "")}
-          <span className="text-brass">House</span>
+          {BRAND.name.replace(BRAND.nameAccent, "")}
+          <span className="text-brass">{BRAND.nameAccent}</span>
         </Link>
 
         <>

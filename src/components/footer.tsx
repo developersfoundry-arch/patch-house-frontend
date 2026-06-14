@@ -8,8 +8,8 @@ export function Footer() {
       <div className="mx-auto grid max-w-7xl gap-10 px-5 py-16 sm:px-8 md:grid-cols-4">
         <div>
           <div className="font-display text-2xl font-semibold text-cream">
-            {BRAND.name.replace("House", "")}
-            <span className="text-brass">House</span>
+            {BRAND.name.replace(BRAND.nameAccent, "")}
+            <span className="text-brass">{BRAND.nameAccent}</span>
           </div>
           <p className="mt-3 text-sm text-cream/70">
             Discreet at-home hair patch fittings across Delhi NCR.

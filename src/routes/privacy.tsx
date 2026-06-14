@@ -4,10 +4,10 @@ import { BRAND } from "@/data/content";
 export const Route = createFileRoute("/privacy")({
   head: () => ({
     meta: [
-      { title: "Privacy Policy — PatchHouse" },
+      { title: "Privacy Policy — StrandsAtHome" },
       {
         name: "description",
-        content: "How PatchHouse collects, uses, and protects your personal information.",
+        content: "How StrandsAtHome collects, uses, and protects your personal information.",
       },
     ],
   }),
@@ -45,8 +45,8 @@ function PrivacyPage() {
           to="/"
           className="font-display text-2xl font-semibold text-foreground transition hover:text-brass"
         >
-          {BRAND.name.replace("House", "")}
-          <span className="text-brass">House</span>
+          {BRAND.name.replace(BRAND.nameAccent, "")}
+          <span className="text-brass">{BRAND.nameAccent}</span>
         </Link>
         <h1 className="mt-10 font-display text-4xl font-semibold text-foreground">
           Privacy Policy

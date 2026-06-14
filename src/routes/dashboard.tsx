@@ -84,8 +84,8 @@ function DashboardLayout() {
         {/* Logo */}
         <div className="flex h-16 items-center justify-between px-5">
           <Link to="/" className="font-display text-lg font-semibold text-cream">
-            {BRAND.name.replace("House", "")}
-            <span className="text-brass">House</span>
+            {BRAND.name.replace(BRAND.nameAccent, "")}
+            <span className="text-brass">{BRAND.nameAccent}</span>
           </Link>
           <button
             onClick={() => setSidebarOpen(false)}
@@ -151,8 +151,8 @@ function DashboardLayout() {
             <Menu className="h-5 w-5" />
           </button>
           <Link to="/" className="font-display text-lg font-semibold text-foreground">
-            {BRAND.name.replace("House", "")}
-            <span className="text-brass">House</span>
+            {BRAND.name.replace(BRAND.nameAccent, "")}
+            <span className="text-brass">{BRAND.nameAccent}</span>
           </Link>
         </header>
 
