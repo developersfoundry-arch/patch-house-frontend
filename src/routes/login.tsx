@@ -53,26 +53,26 @@ function LoginPage() {
   };
 
   return (
-    <div className="section-dark grain flex min-h-screen items-center justify-center px-5 py-16">
+    <div className="flex min-h-screen items-center justify-center bg-cream px-5 py-16 grain">
       <div className="w-full max-w-md">
         <Link
           to="/"
-          className="mb-10 block text-center font-display text-2xl font-semibold text-cream"
+          className="mb-10 block text-center font-display text-2xl font-semibold text-ink"
         >
           {BRAND.name.replace("House", "")}
           <span className="text-brass">House</span>
         </Link>
 
-        <div className="rounded-3xl border border-white/10 bg-white/[0.03] p-8 backdrop-blur">
-          <h1 className="font-display text-3xl font-semibold text-cream">Welcome back</h1>
-          <p className="mt-2 text-sm text-cream/70">Sign in to manage your bookings.</p>
+        <div className="rounded-3xl border border-ink/10 bg-white p-8 shadow-xl">
+          <h1 className="font-display text-3xl font-semibold text-ink">Welcome back</h1>
+          <p className="mt-2 text-sm text-ink/60">Sign in to manage your bookings.</p>
 
           <div className="mt-8">
-            {err && <p className="mb-4 text-sm text-red-400">{err}</p>}
+            {err && <p className="mb-4 text-sm text-red-600">{err}</p>}
             <button
               onClick={handleGoogleLogin}
               disabled={loading}
-              className="btn-lift flex w-full cursor-pointer items-center justify-center gap-3 rounded-full border border-white/15 bg-white/5 py-3.5 text-sm font-semibold text-cream hover:bg-white/10 disabled:opacity-60"
+              className="btn-lift flex w-full cursor-pointer items-center justify-center gap-3 rounded-full bg-brass py-3.5 text-sm font-semibold text-ink hover:bg-brass-soft disabled:opacity-60"
             >
               {loading ? (
                 "Signing in…"
@@ -86,7 +86,7 @@ function LoginPage() {
           </div>
         </div>
 
-        <p className="mt-6 text-center text-xs text-cream/50">
+        <p className="mt-6 text-center text-xs text-ink/50">
           By continuing you agree to our private &amp; confidential service terms.
         </p>
       </div>
