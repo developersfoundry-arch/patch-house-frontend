@@ -75,7 +75,7 @@ export function Footer() {
               href={`tel:+${BRAND.whatsappNumber}`}
               className="flex items-center gap-2 hover:text-brass"
             >
-              <Phone className="h-4 w-4" /> +91 99999 99999
+              <Phone className="h-4 w-4" /> +91 84373 42545
             </a>
             <a
               href={waLink()}
