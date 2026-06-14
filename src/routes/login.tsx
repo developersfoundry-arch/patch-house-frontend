@@ -53,22 +53,22 @@ function LoginPage() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-cream px-5 py-16 grain">
+    <div className="section-dark grain flex min-h-screen items-center justify-center px-5 py-16">
       <div className="w-full max-w-md">
         <Link
           to="/"
-          className="mb-10 block text-center font-display text-2xl font-semibold text-ink"
+          className="mb-10 block text-center font-display text-2xl font-semibold text-foreground"
         >
           {BRAND.name.replace("House", "")}
           <span className="text-brass">House</span>
         </Link>
 
-        <div className="rounded-3xl border border-ink/10 bg-white p-8 shadow-xl">
-          <h1 className="font-display text-3xl font-semibold text-ink">Welcome back</h1>
-          <p className="mt-2 text-sm text-ink/60">Sign in to manage your bookings.</p>
+        <div className="card-glass rounded-3xl border border-foreground/10 p-8 backdrop-blur">
+          <h1 className="font-display text-3xl font-semibold text-foreground">Welcome back</h1>
+          <p className="mt-2 text-sm text-muted-foreground">Sign in to manage your bookings.</p>
 
           <div className="mt-8">
-            {err && <p className="mb-4 text-sm text-red-600">{err}</p>}
+            {err && <p className="mb-4 text-sm text-red-400">{err}</p>}
             <button
               onClick={handleGoogleLogin}
               disabled={loading}
@@ -86,7 +86,7 @@ function LoginPage() {
           </div>
         </div>
 
-        <p className="mt-6 text-center text-xs text-ink/50">
+        <p className="mt-6 text-center text-xs text-muted-foreground">
           By continuing you agree to our private &amp; confidential service terms.
         </p>
       </div>

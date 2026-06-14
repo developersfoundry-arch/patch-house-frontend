@@ -23,6 +23,18 @@ function DashboardLayout() {
   const queryClient = useQueryClient();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
+  // Dashboard is always light mode — the dark sidebar is part of its own design system
+  // (dashboard-sidebar / dashboard-area classes), not the landing page dark/light toggle.
+  // We restore the previous preference when the user navigates back to the landing page.
+  useEffect(() => {
+    const prev = document.documentElement.getAttribute("data-mode");
+    document.documentElement.setAttribute("data-mode", "light");
+    return () => {
+      if (prev === null) document.documentElement.removeAttribute("data-mode");
+      else document.documentElement.setAttribute("data-mode", prev);
+    };
+  }, []);
+
   const { data: user, isLoading, isError } = useQuery({
     queryKey: ["me"],
     queryFn: () => api.get<UserType>("/me"),
